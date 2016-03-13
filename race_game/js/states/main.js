@@ -118,18 +118,20 @@ MAIN.createHelper = {
   // Create sprites and handles multiplayer option
   createPlayer: function(){
 
+    var players = {};
     var player1 = new Player(game.world.width/2,
                              game.world.height-150, MAIN.P1_IMG);
     player1 = player1.setupPlayer();
-    MAIN.player = player1;
+    players.p1 = player1;
 
     if (MAIN.multiplayer === 'true'){
 
       var player2 = new Player(game.world.width/2,
                                game.world.height-100, MAIN.P2_IMG);
       player2 = player2.setupPlayer();
-      MAIN.player2 = player2;
+      players.p2 = player2;
     }
+    return players;
   },
 
   /* Functions related to scoring */
@@ -178,32 +180,32 @@ MAIN.createHelper = {
 MAIN.updateHelper = {
 
   // Stop player if no keys are pressed
-  resetVelocity: function(){
-    MAIN.player.body.velocity.x = 0;
-    MAIN.player.body.velocity.y = 0;
-    MAIN.player.body.angularVelocity = 0;
+  resetVelocity: function(player1, player2){
+    player1.body.velocity.x = 0;
+    player1.body.velocity.y = 0;
+    player1.body.angularVelocity = 0;
 
     if (MAIN.multiplayer === 'true'){
-      MAIN.player2.body.velocity.x = 0;
-      MAIN.player2.body.velocity.y = 0;
-      MAIN.player2.body.angularVelocity = 0;
+      player2.body.velocity.x = 0;
+      player2.body.velocity.y = 0;
+      player2.body.angularVelocity = 0;
     }
   },
 
   // Stop player when colliding against walls
-  detectCollision: function(){
-    game.physics.arcade.collide(MAIN.player, MAIN.platforms);
+  detectCollision: function(player1, player2){
+    game.physics.arcade.collide(player1, MAIN.platforms);
     if (MAIN.multiplayer === 'true'){
-      game.physics.arcade.collide(MAIN.player2, MAIN.platforms);
+      game.physics.arcade.collide(player2, MAIN.platforms);
     }
   },
 
   // Detects if any player crossed a checkpoint
-  detectCheckptOverlap: function(){
-    game.physics.arcade.overlap(MAIN.player, MAIN.checkpoints,
+  detectCheckptOverlap: function(player1, player2){
+    game.physics.arcade.overlap(player1, MAIN.checkpoints,
                                 this.handleCrossCheckpt, null, this);
     if (MAIN.multiplayer === 'true'){
-      game.physics.arcade.overlap(MAIN.player2, MAIN.checkpoints,
+      game.physics.arcade.overlap(player2, MAIN.checkpoints,
                                   this.handleCrossCheckpt, null, this);
     }
   },
@@ -222,47 +224,47 @@ MAIN.updateHelper = {
 
   // Detects if player pressed keys for up or down movement
   // Also detects 2nd player movement if multiplayer option chosen
-  detectHorMov: function(){
+  detectHorMov: function(player1, player2){
     if (MAIN.cursor.left.isDown){
-      MAIN.player.body.angularVelocity = -MAIN.VELOCITY;
+      player1.body.angularVelocity = -MAIN.VELOCITY;
     }
     else if (MAIN.cursor.right.isDown){
-      MAIN.player.body.angularVelocity = MAIN.VELOCITY;
+      player1.body.angularVelocity = MAIN.VELOCITY;
     }
 
     if (MAIN.multiplayer === 'true'){
       if (MAIN.aKey.isDown){
-        MAIN.player2.body.angularVelocity = -MAIN.VELOCITY;
+        player2.body.angularVelocity = -MAIN.VELOCITY;
       }
       else if (MAIN.dKey.isDown){
-        MAIN.player2.body.angularVelocity = MAIN.VELOCITY;
+        player2.body.angularVelocity = MAIN.VELOCITY;
       }
     }
   },
 
   // Detects if player pressed keys for left or right movement
   // Also detects 2nd player movement if multiplayer option chosen
-  detectVertMov: function(){
+  detectVertMov: function(player1, player2){
     if (MAIN.cursor.up.isDown){
-      game.physics.arcade.velocityFromAngle(MAIN.player.angle,MAIN.VELOCITY,
-                                            MAIN.player.body.velocity);
+      game.physics.arcade.velocityFromAngle(player1.angle,MAIN.VELOCITY,
+                                            player1.body.velocity);
     }
     else if (MAIN.cursor.down.isDown){
-      game.physics.arcade.velocityFromAngle(MAIN.player.angle,
+      game.physics.arcade.velocityFromAngle(player1.angle,
                                             -MAIN.VELOCITY,
-                                            MAIN.player.body.velocity);
+                                            player1.body.velocity);
     }
 
     if (MAIN.multiplayer === 'true'){
       if (MAIN.wKey.isDown){
-        game.physics.arcade.velocityFromAngle(MAIN.player2.angle, 
+        game.physics.arcade.velocityFromAngle(player2.angle, 
                                               MAIN.VELOCITY,
-                                              MAIN.player2.body.velocity);
+                                              player2.body.velocity);
       }
       else if (MAIN.sKey.isDown){
-        game.physics.arcade.velocityFromAngle(MAIN.player2.angle, 
+        game.physics.arcade.velocityFromAngle(player2.angle, 
                                               -MAIN.VELOCITY,
-                                              MAIN.player2.body.velocity);
+                                              player2.body.velocity);
       }
     }
   }, 
@@ -295,13 +297,16 @@ MAIN.updateHelper = {
 // mainState left global for use in game.js
 var mainState = {
     // create() and update() are default function in phaser
-
+    player1: null,
+    player2: null,
     // create() sets up environment and is called when state entered 
     create:function() {
       MAIN.createHelper.checkMultiplayer();
       MAIN.createHelper.setupWorld();
       MAIN.createHelper.createCheckpts();
-      MAIN.createHelper.createPlayer();
+      var players = MAIN.createHelper.createPlayer();
+      player1 = players.p1;
+      player2 = players.p2;
       MAIN.createHelper.createTimer();
       MAIN.createHelper.createTimerText();
       MAIN.createHelper.addKeyboard();
@@ -309,11 +314,11 @@ var mainState = {
 
     // update() called for frame refresh
     update:function() {
-      MAIN.updateHelper.resetVelocity();
-      MAIN.updateHelper.detectCollision();
-      MAIN.updateHelper.detectVertMov();
-      MAIN.updateHelper.detectHorMov();
-      MAIN.updateHelper.detectCheckptOverlap();
+      MAIN.updateHelper.resetVelocity(player1, player2);
+      MAIN.updateHelper.detectCollision(player1, player2);
+      MAIN.updateHelper.detectVertMov(player1, player2);
+      MAIN.updateHelper.detectHorMov(player1, player2);
+      MAIN.updateHelper.detectCheckptOverlap(player1, player2);
       MAIN.updateHelper.checkFinish();
     }
 };
