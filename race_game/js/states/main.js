@@ -8,8 +8,8 @@ var MAIN = {
   GROUND : 'ground',
   WALL : 'wall',
   FINISH : 'finish',
-  P1 : 'car1',
-  P2 : 'car2',
+  P1_IMG : 'car1',
+  P2_IMG : 'car2',
   ANCHOR : 0.5,
   TIMER_STR : 'Time: '
 };
@@ -117,23 +117,19 @@ MAIN.createHelper = {
   /* Function related to Sprites */
   // Create sprites and handles multiplayer option
   createPlayer: function(){
-    var playerArr = [];
-    var player = game.add.sprite(game.world.width/2, 
-                                 game.world.height-150, MAIN.P1);
-    game.physics.arcade.enable(player);
-    player.anchor.setTo(MAIN.ANCHOR, MAIN.ANCHOR);
-    MAIN.player = player;
-    playerArr.push(player);
+
+    var player1 = new Player(game.world.width/2,
+                             game.world.height-150, MAIN.P1_IMG);
+    player1 = player1.setupPlayer();
+    MAIN.player = player1;
 
     if (MAIN.multiplayer === 'true'){
-      var player2 = game.add.sprite(game.world.width/2,
-                                    game.world.height-100, MAIN.P2);
-      game.physics.arcade.enable(player2);
-      player2.anchor.setTo(MAIN.ANCHOR, MAIN.ANCHOR);
+
+      var player2 = new Player(game.world.width/2,
+                               game.world.height-100, MAIN.P2_IMG);
+      player2 = player2.setupPlayer();
       MAIN.player2 = player2;
-      playerArr.push(player2);
     }
-    return playerArr;
   },
 
   /* Functions related to scoring */
