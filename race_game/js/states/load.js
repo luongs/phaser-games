@@ -1,12 +1,14 @@
 // load.js preloads all assets
-var LOAD = {};
+var LOAD = {
+  loadMsg : "Loading...",
+  textFont : {font: '30px Courier', fill: '#ffffff'},
+  loadLabelX : 80,
+  loadLabelY : 150,
+  backgroundColor : '#D4A190'
+};
+
 // game is a global variable set in game.js
 var game = game;
-LOAD.loadMsg = "Loading...";
-LOAD.textFont = {font: '30px Courier', fill: '#ffffff'};
-LOAD.loadLabelX = 80;
-LOAD.loadLabelY = 150;
-LOAD.backgroundColor = '#D4A190';
 
 LOAD.preloadHelper = {
   displayLoadMsg: function() {

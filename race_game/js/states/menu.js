@@ -1,17 +1,18 @@
 // menu.js displays menu screen with instruction
-var MENU = {};
+var MENU = {
+  title : 'RC Racer',
+  startLabel : 'Press "1" key for 1 player game',
+  multiLabel : 'Press "2" key for 2 player game',
+  instrLabel : 'Instructions',
+  accelLabel : "Accelerate: Up arrow (P1)  W key (P2)",
+  reverseLabel : 'Reverse: Down arrow (P1)  D key (P2)',
+  turnLabel : 'Turn: Left/Right arrow (P1)  A/D key (P2)',
+  headerFont : {font: '50px Arial', fill: '#ffffff'},
+  textFont : {font: '25px Arial', fill: '#ffffff'}
+};
+
 // game is a global variable set in game.js
 var game = game;
-MENU.title = 'RC Racer';
-MENU.startLabel = 'Press "1" key for 1 player game';
-MENU.multiLabel = 'Press "2" key for 2 player game';
-MENU.instrLabel = 'Instructions';
-MENU.accelLabel = "Accelerate: Up arrow (P1)  W key (P2)";
-MENU.reverseLabel = 'Reverse: Down arrow (P1)  D key (P2)';
-MENU.turnLabel = 'Turn: Left/Right arrow (P1)  A/D key (P2)';
-MENU.headerFont = {font: '50px Arial', fill: '#ffffff'};
-MENU.textFont = {font: '25px Arial', fill: '#ffffff'};
-
 MENU.menuHelper = {
   displayText: function(){
     game.add.text(80,80, MENU.title, MENU.headerFont);

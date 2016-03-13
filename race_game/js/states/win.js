@@ -1,12 +1,14 @@
 // win.js displays win screen
 
-var WIN = {};
+var WIN = {
+  scoreMsg : "Your time in seconds: ",
+  highScoreMsg : "Fastest time: ",
+  mainMenuMsg : "Press Space bar to return to main menu",
+  textFont : {font: '25px Arial', fill: '#ffffff'}
+};
+
 // game is a global variable set in game.js
 var game = game;
-WIN.scoreMsg = "Your time in seconds: ";
-WIN.highScoreMsg = "Fastest time: ";
-WIN.mainMenuMsg = "Press Space bar to return to main menu";
-WIN.textFont = {font: '25px Arial', fill: '#ffffff'};
 
 WIN.winHelper = {
   displayMsgs: function(){
