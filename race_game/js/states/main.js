@@ -1,22 +1,23 @@
 // main contains the game logic and sets up the world
-var MAIN = {};
+var MAIN = {
+  VELOCITY : 400,
+  DOUBLE_SCALE : 2,
+  SAME_SCALE : 1,
+  THREE_QUARTER_SCALE : 0.75,
+  LARGE_SCALE : 6,
+  GROUND : 'ground',
+  WALL : 'wall',
+  FINISH : 'finish',
+  P1 : 'car1',
+  P2 : 'car2',
+  ANCHOR : 0.5,
+  TIMER_STR : 'Time: '
+};
+
 // game is a global variable set in game.js
 var game = game;
-MAIN.VELOCITY = 400;
-MAIN.DOUBLE_SCALE = 2;
-MAIN.SAME_SCALE = 1;
-MAIN.THREE_QUARTER_SCALE = 0.75;
-MAIN.LARGE_SCALE = 6;
-MAIN.GROUND = 'ground';
-MAIN.WALL = 'wall';
-MAIN.FINISH = 'finish';
-MAIN.P1 = 'car1';
-MAIN.P2 = 'car2';
-MAIN.ANCHOR = 0.5;
-MAIN.TIMER_STR = 'Time: ';
 
 MAIN.createHelper = {
-
   // Check if multiplayer option chosen in menu screen
   checkMultiplayer: function(){
     var isMultiplayer = false;
