@@ -28,52 +28,43 @@ MAIN.createHelper = {
 
   /* Functions related to world setup */
   // Setup game obstacles and track
-  setupWorld: function(){
-    this.createPlatformGroup();
-    this.createBoundaries();
+  setupWorld: function(platforms){
+    this.createBoundaries(platforms);
     this.createTrack((game.world.width/2)-150,
                       (game.world.height/2)-100,
-                      MAIN.GROUND);
+                      MAIN.GROUND, platforms);
   }, 
 
-  // Groups are used by Phaser to aggregate common elements like obstacles 
-  createPlatformGroup: function(){
-    var platforms = game.add.group();
-    platforms.enableBody = true;
-    MAIN.platforms = platforms;
-    return platforms;
-  },
-
-  createBoundaries: function(){
-    this.createFloor(0, game.world.height-64, MAIN.GROUND); 
-    this.createCeiling(0, 0, MAIN.GROUND);
-    this.createWalls(0,0,MAIN.WALL);
-    this.createWalls(game.world.width-30, 0, MAIN.WALL);
+  createBoundaries: function(platforms){
+    this.createFloor(0, game.world.height-64, MAIN.GROUND, platforms); 
+    this.createCeiling(0, 0, MAIN.GROUND, platforms);
+    this.createWalls(0,0,MAIN.WALL, platforms);
+    this.createWalls(game.world.width-30, 0, MAIN.WALL, platforms);
   }, 
 
-  createFloor: function(x,y,graphic){
-    var ground = MAIN.platforms.create(x, y, graphic);
+  createFloor: function(x,y,graphic, platforms){
+    var ground = platforms.create(x, y, graphic);
     ground.body.immovable = true;
     this.changeScale(ground, MAIN.DOUBLE_SCALE, MAIN.DOUBLE_SCALE);
     return ground;
   }, 
 
-  createCeiling: function(x, y, graphic){
-    var ceiling = MAIN.platforms.create(x, y, graphic);
+  createCeiling: function(x, y, graphic, platforms){
+    var ceiling = platforms.create(x, y, graphic);
     ceiling.body.immovable = true;
     this.changeScale(ceiling, MAIN.DOUBLE_SCALE, MAIN.SAME_SCALE);
     return ceiling;
   },
 
-  createWalls: function(x, y, graphic){
-    var wall = MAIN.platforms.create(x,y,graphic);
+  createWalls: function(x, y, graphic, platforms){
+    var wall = platforms.create(x,y,graphic);
     wall.body.immovable = true;
     this.changeScale(wall, MAIN.SAME_SCALE, MAIN.DOUBLE_SCALE);
     return wall;
   },
 
-  createTrack: function(x, y, graphic) {
-    var middle = MAIN.platforms.create(x, y, graphic);
+  createTrack: function(x, y, graphic, platforms) {
+    var middle = platforms.create(x, y, graphic);
     middle.body.immovable = true;
     this.changeScale(middle, MAIN.THREE_QUARTER_SCALE, MAIN.LARGE_SCALE);
     return middle;
@@ -191,10 +182,10 @@ MAIN.updateHelper = {
   },
 
   // Stop player when colliding against walls
-  detectCollision: function(players){
-    game.physics.arcade.collide(players.p1, MAIN.platforms);
+  detectCollision: function(players, platforms){
+    game.physics.arcade.collide(players.p1, platforms);
     if (MAIN.isMultiplayer()){
-      game.physics.arcade.collide(players.p2, MAIN.platforms);
+      game.physics.arcade.collide(players.p2, platforms);
     }
   },
 
@@ -294,24 +285,25 @@ MAIN.updateHelper = {
 
 // mainState left global for use in game.js
 var mainState = {
-    players: null,
     // create() sets up environment and is called when state entered 
     create:function() {
-      MAIN.createHelper.setupWorld();
+      // platform group used to aggregate common level/world elements
+      MAIN.platforms = LEVEL.createPlatformGroup();
+      MAIN.createHelper.setupWorld(MAIN.platforms);
       MAIN.createHelper.createCheckpts();
-      players = MAIN.createHelper.createPlayer();
+      MAIN.players = MAIN.createHelper.createPlayer();
       MAIN.createHelper.createTimer();
       MAIN.createHelper.createTimerText();
       MAIN.createHelper.addKeyboard();
     },
 
-    // update() called for frame refresh
+    // update() called on frame refresh
     update:function() {
-      MAIN.updateHelper.resetVelocity(players);
-      MAIN.updateHelper.detectCollision(players);
-      MAIN.updateHelper.detectVertMov(players);
-      MAIN.updateHelper.detectHorMov(players);
-      MAIN.updateHelper.detectCheckptOverlap(players);
+      MAIN.updateHelper.resetVelocity(MAIN.players);
+      MAIN.updateHelper.detectCollision(MAIN.players, MAIN.platforms);
+      MAIN.updateHelper.detectVertMov(MAIN.players);
+      MAIN.updateHelper.detectHorMov(MAIN.players);
+      MAIN.updateHelper.detectCheckptOverlap(MAIN.players);
       MAIN.updateHelper.checkFinish();
     }
 };
