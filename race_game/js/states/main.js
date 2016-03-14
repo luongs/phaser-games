@@ -17,16 +17,14 @@ var MAIN = {
 // game is a global variable set in game.js
 var game = game;
 
-MAIN.createHelper = {
-  // Check if multiplayer option chosen in menu screen
-  checkMultiplayer: function(){
-    var isMultiplayer = false;
-    if (game.device.localStorage){
-      isMultiplayer = localStorage.multiplayer;
+MAIN.isMultiplayer = function(){
+  if (game.device.localStorage){
+      return localStorage.multiplayer === 'true';
     }
-    MAIN.multiplayer = isMultiplayer; 
-    return isMultiplayer;
-  },
+  return false;
+};
+
+MAIN.createHelper = {
 
   /* Functions related to world setup */
   // Setup game obstacles and track
@@ -124,7 +122,7 @@ MAIN.createHelper = {
     player1 = player1.setupPlayer();
     players.p1 = player1;
 
-    if (MAIN.multiplayer === 'true'){
+    if (MAIN.isMultiplayer()) {
 
       var player2 = new Player(game.world.width/2,
                                game.world.height-100, MAIN.P2_IMG);
@@ -163,7 +161,7 @@ MAIN.createHelper = {
     var cursor = game.input.keyboard.createCursorKeys();
     MAIN.cursor = cursor;
 
-    if (MAIN.multiplayer === 'true'){
+    if (MAIN.isMultiplayer()){
       var wKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
       var aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
       var sKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -185,7 +183,7 @@ MAIN.updateHelper = {
     players.p1.body.velocity.y = 0;
     players.p1.body.angularVelocity = 0;
 
-    if (MAIN.multiplayer === 'true'){
+    if (MAIN.isMultiplayer()){
       players.p2.body.velocity.x = 0;
       players.p2.body.velocity.y = 0;
       players.p2.body.angularVelocity = 0;
@@ -195,7 +193,7 @@ MAIN.updateHelper = {
   // Stop player when colliding against walls
   detectCollision: function(players){
     game.physics.arcade.collide(players.p1, MAIN.platforms);
-    if (MAIN.multiplayer === 'true'){
+    if (MAIN.isMultiplayer()){
       game.physics.arcade.collide(players.p2, MAIN.platforms);
     }
   },
@@ -204,7 +202,7 @@ MAIN.updateHelper = {
   detectCheckptOverlap: function(players){
     game.physics.arcade.overlap(players.p1, MAIN.checkpoints,
                                 this.handleCrossCheckpt, null, this);
-    if (MAIN.multiplayer === 'true'){
+    if (MAIN.isMultiplayer()){
       game.physics.arcade.overlap(players.p2, MAIN.checkpoints,
                                   this.handleCrossCheckpt, null, this);
     }
@@ -232,7 +230,7 @@ MAIN.updateHelper = {
       players.p1.body.angularVelocity = MAIN.VELOCITY;
     }
 
-    if (MAIN.multiplayer === 'true'){
+    if (MAIN.isMultiplayer()){
       if (MAIN.aKey.isDown){
         players.p2.body.angularVelocity = -MAIN.VELOCITY;
       }
@@ -255,7 +253,7 @@ MAIN.updateHelper = {
                                             players.p1.body.velocity);
     }
 
-    if (MAIN.multiplayer === 'true'){
+    if (MAIN.isMultiplayer()){
       if (MAIN.wKey.isDown){
         game.physics.arcade.velocityFromAngle(players.p2.angle, 
                                               MAIN.VELOCITY,
@@ -296,11 +294,9 @@ MAIN.updateHelper = {
 
 // mainState left global for use in game.js
 var mainState = {
-    // create() and update() are default function in phaser
     players: null,
     // create() sets up environment and is called when state entered 
     create:function() {
-      MAIN.createHelper.checkMultiplayer();
       MAIN.createHelper.setupWorld();
       MAIN.createHelper.createCheckpts();
       players = MAIN.createHelper.createPlayer();
