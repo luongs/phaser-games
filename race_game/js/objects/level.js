@@ -7,25 +7,25 @@ var LEVEL = {
 var game = game;
 
 // groups are used by Phaser to aggregate common elements like obtacles
-LEVEL.createPlatformGroup = function(){
+LEVEL.createGroup = function(){
   var platform = game.add.group();
   platform.enableBody = true;
   return platform;
 };
 
-var Wall = function(x, y, img, group){
+var Structure = function(x, y, img, group){
   this.x = x;
   this.y = y;
   this.img = img;
   this.group = group;
 };
 
-Wall.prototype.createWall = function(){
-  var wall = this.group.create(this.x, this.y, this.graphic);
-  wall.body.immovable = true;
-  return wall;
+Structure.prototype.createStructure = function(){
+  var struct = this.group.create(this.x, this.y, this.img);
+  struct.body.immovable = true;
+  return struct;
 };
 
-Wall.prototype.changeScale = function(wall, x_scale, y_scale){
-  wall.changeScale(wall, x_scale, y_scale);
+Structure.prototype.changeScale = function(item, x_scale, y_scale){
+  item.scale.setTo(x_scale, y_scale);
 };

@@ -26,82 +26,51 @@ MAIN.isMultiplayer = function(){
 
 MAIN.createHelper = {
 
-  /* Functions related to world setup */
   // Setup game obstacles and track
-  setupWorld: function(platforms){
-    this.createBoundaries(platforms);
-    this.createTrack((game.world.width/2)-150,
-                      (game.world.height/2)-100,
-                      MAIN.GROUND, platforms);
+  createTrack: function(platforms){
+    var item = null;
+    var floor = new Structure(0, game.world.height-64, MAIN.GROUND, platforms);
+    item = floor.createStructure();
+    floor.changeScale(item, MAIN.DOUBLE_SCALE, MAIN.DOUBLE_SCALE);
+
+    var ceiling = new Structure(0,0, MAIN.GROUND, platforms);
+    item = ceiling.createStructure();
+    ceiling.changeScale(item, MAIN.DOUBLE_SCALE, MAIN.SAME_SCALE);
+
+    var wall = new Structure(0, 0, MAIN.WALL, platforms);
+    item = wall.createStructure();
+    wall.changeScale(item, MAIN.SAME_SCALE, MAIN.DOUBLE_SCALE);
+
+    wall = new Structure(game.world.width-30, 0, MAIN.WALL, platforms);
+    item = wall.createStructure();
+    wall.changeScale(item, MAIN.SAME_SCALE, MAIN.DOUBLE_SCALE);
+
+    var middleObstacle = new Structure(game.world.width/2-150,
+                                       game.world.height/2-100,
+                                       MAIN.GROUND, platforms);
+    item = middleObstacle.createStructure();
+    middleObstacle.changeScale(item, MAIN.THREE_QUARTER_SCALE,
+                               MAIN.LARGE_SCALE);
   }, 
 
-  createBoundaries: function(platforms){
-    this.createFloor(0, game.world.height-64, MAIN.GROUND, platforms); 
-    this.createCeiling(0, 0, MAIN.GROUND, platforms);
-    this.createWalls(0,0,MAIN.WALL, platforms);
-    this.createWalls(game.world.width-30, 0, MAIN.WALL, platforms);
-  }, 
+  createCheckpoints: function(checkpts){
+    var checkpoint1 = new Structure(game.world.width/2, game.world.height/2,
+                                    MAIN.GROUND, checkpts);
+    item = checkpoint1.createStructure();
+    checkpoint1.changeScale(item, MAIN.DOUBLE_SCALE, MAIN.THREE_QUARTER_SCALE);
 
-  createFloor: function(x,y,graphic, platforms){
-    var ground = platforms.create(x, y, graphic);
-    ground.body.immovable = true;
-    this.changeScale(ground, MAIN.DOUBLE_SCALE, MAIN.DOUBLE_SCALE);
-    return ground;
-  }, 
-
-  createCeiling: function(x, y, graphic, platforms){
-    var ceiling = platforms.create(x, y, graphic);
-    ceiling.body.immovable = true;
-    this.changeScale(ceiling, MAIN.DOUBLE_SCALE, MAIN.SAME_SCALE);
-    return ceiling;
+    var checkpoint2 = new Structure(-(game.world.width/2), game.world.height/2, 
+                                    MAIN.GROUND, checkpts);
+    item = checkpoint2.createStructure();
+    checkpoint2.changeScale(item, MAIN.DOUBLE_SCALE, 
+                            MAIN.THREE_QUARTER_SCALE);
+    var finishLine = new Structure(game.world.width/2-100, 
+                                   game.world.height/2+75,
+                                   MAIN.FINISH, checkpts);
+    item = finishLine.createStructure();
+    finishLine.changeScale(item, MAIN.THREE_QUARTER_SCALE, 0.5);
   },
 
-  createWalls: function(x, y, graphic, platforms){
-    var wall = platforms.create(x,y,graphic);
-    wall.body.immovable = true;
-    this.changeScale(wall, MAIN.SAME_SCALE, MAIN.DOUBLE_SCALE);
-    return wall;
-  },
-
-  createTrack: function(x, y, graphic, platforms) {
-    var middle = platforms.create(x, y, graphic);
-    middle.body.immovable = true;
-    this.changeScale(middle, MAIN.THREE_QUARTER_SCALE, MAIN.LARGE_SCALE);
-    return middle;
-  },
-
-  // Changes dimension of item
-  changeScale: function(item, x, y){
-    item.scale.setTo(x,y);
-  },
-
-  createCheckpts: function(){
-    this.createCheckptGroup();
-    this.createCheckPt(game.world.width/2, game.world.height/2, MAIN.GROUND);
-    this.createCheckPt(-(game.world.width/2), game.world.height/2, MAIN.GROUND);
-    this.createFinishLine(game.world.width/2-100, game.world.height/2+75,
-                          MAIN.FINISH);                    
-  },
-
-  createCheckptGroup: function(){
-    var checkpoints = game.add.group();
-    checkpoints.enableBody = true; 
-    MAIN.checkpoints = checkpoints;
-    return checkpoints;
-  },
-
-  createCheckPt: function(x, y, graphic){
-    var checkPt = MAIN.checkpoints.create(x, y, graphic);
-    this.changeScale(checkPt, MAIN.DOUBLE_SCALE, MAIN.THREE_QUARTER_SCALE);
-    return checkPt;
-  },
-
-  createFinishLine: function(x,y,graphic){
-    var finishLine = MAIN.checkpoints.create(x,y,graphic);
-    this.changeScale(finishLine, MAIN.THREE_QUARTER_SCALE, 
-                    0.5);
-    return finishLine;
-  },
 
   /* Function related to Sprites */
   // Create sprites and handles multiplayer option
@@ -190,16 +159,20 @@ MAIN.updateHelper = {
   },
 
   // Detects if any player crossed a checkpoint
-  detectCheckptOverlap: function(players){
-    game.physics.arcade.overlap(players.p1, MAIN.checkpoints,
+  // TODO Fix Global checkpoint
+  detectCheckptOverlap: function(players, checkpoint){
+    console.log("Overlap");
+    console.log(checkpoint);
+    game.physics.arcade.overlap(players.p1, checkpoint,
                                 this.handleCrossCheckpt, null, this);
     if (MAIN.isMultiplayer()){
-      game.physics.arcade.overlap(players.p2, MAIN.checkpoints,
+      game.physics.arcade.overlap(players.p2, checkpoint,
                                   this.handleCrossCheckpt, null, this);
     }
   },
   
   // Check crossing order and removes checkpoint if order is followed 
+  // TODO Fix global checkpoint
   handleCrossCheckpt : function(player, checkpoint){
     var firstCheckptAlive = MAIN.checkpoints.getFirstAlive();
     var firstAliveIndex = MAIN.checkpoints.getIndex(firstCheckptAlive);
@@ -258,8 +231,8 @@ MAIN.updateHelper = {
     }
   }, 
 
-  checkFinish: function(){
-    if (MAIN.checkpoints.countLiving() === 0){
+  checkFinish: function(checkpoint){
+    if (checkpoint.countLiving() === 0){
       console.log("You finished the race!");
       this.saveTime();
       // Go to win screen
@@ -288,9 +261,11 @@ var mainState = {
     // create() sets up environment and is called when state entered 
     create:function() {
       // platform group used to aggregate common level/world elements
-      MAIN.platforms = LEVEL.createPlatformGroup();
-      MAIN.createHelper.setupWorld(MAIN.platforms);
-      MAIN.createHelper.createCheckpts();
+      MAIN.platforms = LEVEL.createGroup();
+      MAIN.createHelper.createTrack(MAIN.platforms);
+      MAIN.checkpoints = LEVEL.createGroup();
+      MAIN.createHelper.createCheckpoints(MAIN.checkpoints);
+      //MAIN.createHelper.createCheckpts();
       MAIN.players = MAIN.createHelper.createPlayer();
       MAIN.createHelper.createTimer();
       MAIN.createHelper.createTimerText();
@@ -303,8 +278,8 @@ var mainState = {
       MAIN.updateHelper.detectCollision(MAIN.players, MAIN.platforms);
       MAIN.updateHelper.detectVertMov(MAIN.players);
       MAIN.updateHelper.detectHorMov(MAIN.players);
-      MAIN.updateHelper.detectCheckptOverlap(MAIN.players);
-      MAIN.updateHelper.checkFinish();
+      MAIN.updateHelper.detectCheckptOverlap(MAIN.players, MAIN.checkpoints);
+      MAIN.updateHelper.checkFinish(MAIN.checkpoints);
     }
 };
 
