@@ -11,6 +11,7 @@ var MAIN = {
   P1_IMG : 'car1',
   P2_IMG : 'car2',
   ANCHOR : 0.5,
+  LOOP_TIME: 1000,  // Time is calculated at every 1000ms => 1s
   TIMER_STR : 'Time: '
 };
 
@@ -93,15 +94,15 @@ MAIN.createHelper = {
   },
 
   /* Functions related to scoring */
-  // set timer for every 1 sec (1000 ms)
   createTimer: function(){
-    game.time.events.loop(1000, this.updateTime, this);
-    MAIN.startTime = game.time.now;
+    var startTime = game.time.now;
+    game.time.events.loop(MAIN.LOOP_TIME, this.updateTime, this, startTime);
+    return startTime;
   },
   
   // Save seconds since game screen started
-  updateTime: function(){
-    var seconds = Math.ceil(game.time.elapsedSecondsSince(MAIN.startTime)); 
+  updateTime: function(startTime){
+    var seconds = Math.ceil(game.time.elapsedSecondsSince(startTime));
     MAIN.timerTest.text = MAIN.TIMER_STR.concat(seconds);
     MAIN.score = seconds;
     return seconds;
@@ -159,10 +160,7 @@ MAIN.updateHelper = {
   },
 
   // Detects if any player crossed a checkpoint
-  // TODO Fix Global checkpoint
   detectCheckptOverlap: function(players, checkpoint){
-    console.log("Overlap");
-    console.log(checkpoint);
     game.physics.arcade.overlap(players.p1, checkpoint,
                                 this.handleCrossCheckpt, null, this);
     if (MAIN.isMultiplayer()){
@@ -172,7 +170,6 @@ MAIN.updateHelper = {
   },
   
   // Check crossing order and removes checkpoint if order is followed 
-  // TODO Fix global checkpoint
   handleCrossCheckpt : function(player, checkpoint){
     var firstCheckptAlive = MAIN.checkpoints.getFirstAlive();
     var firstAliveIndex = MAIN.checkpoints.getIndex(firstCheckptAlive);
@@ -265,7 +262,6 @@ var mainState = {
       MAIN.createHelper.createTrack(MAIN.platforms);
       MAIN.checkpoints = LEVEL.createGroup();
       MAIN.createHelper.createCheckpoints(MAIN.checkpoints);
-      //MAIN.createHelper.createCheckpts();
       MAIN.players = MAIN.createHelper.createPlayer();
       MAIN.createHelper.createTimer();
       MAIN.createHelper.createTimerText();
