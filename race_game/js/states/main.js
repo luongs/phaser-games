@@ -94,16 +94,18 @@ MAIN.createHelper = {
   },
 
   /* Functions related to scoring */
-  createTimer: function(){
+  createTimer: function(timerText){
     var startTime = game.time.now;
-    game.time.events.loop(MAIN.LOOP_TIME, this.updateTime, this, startTime);
+    game.time.events.loop(MAIN.LOOP_TIME, this.updateTime, this,
+                          startTime, timerText);
     return startTime;
   },
   
   // Save seconds since game screen started
-  updateTime: function(startTime){
+  updateTime: function(startTime, timerText){
     var seconds = Math.ceil(game.time.elapsedSecondsSince(startTime));
-    MAIN.timerTest.text = MAIN.TIMER_STR.concat(seconds);
+    timerText.text = MAIN.TIMER_STR.concat(seconds);
+    // Set score global variable
     MAIN.score = seconds;
     return seconds;
   },
@@ -112,7 +114,6 @@ MAIN.createHelper = {
   createTimerText: function(){
     var timerText = game.add.text(18,18,MAIN.TIMER_STR, 
                                   {fontSize:'20px', fill: "#ffffff" });
-    MAIN.timerTest = timerText;
     return timerText;
   }, 
 
@@ -120,7 +121,6 @@ MAIN.createHelper = {
   addKeyboard: function(){
     // cursor automatically sets arrow keys
     var cursor = game.input.keyboard.createCursorKeys();
-    MAIN.cursor = cursor;
 
     if (MAIN.isMultiplayer()){
       var wKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -128,11 +128,13 @@ MAIN.createHelper = {
       var sKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
       var dKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
 
+      // Set global vars for multiplayer keyboard
       MAIN.wKey = wKey;
       MAIN.aKey = aKey;
       MAIN.sKey = sKey;
       MAIN.dKey = dKey;
     }
+  return cursor;
   }
 };
 
@@ -183,11 +185,11 @@ MAIN.updateHelper = {
 
   // Detects if player pressed keys for up or down movement
   // Also detects 2nd player movement if multiplayer option chosen
-  detectHorMov: function(players){
-    if (MAIN.cursor.left.isDown){
+  detectHorMov: function(players, cursor){
+    if (cursor.left.isDown){
       players.p1.body.angularVelocity = -MAIN.VELOCITY;
     }
-    else if (MAIN.cursor.right.isDown){
+    else if (cursor.right.isDown){
       players.p1.body.angularVelocity = MAIN.VELOCITY;
     }
 
@@ -203,12 +205,12 @@ MAIN.updateHelper = {
 
   // Detects if player pressed keys for left or right movement
   // Also detects 2nd player movement if multiplayer option chosen
-  detectVertMov: function(players){
-    if (MAIN.cursor.up.isDown){
+  detectVertMov: function(players, cursor){
+    if (cursor.up.isDown){
       game.physics.arcade.velocityFromAngle(players.p1.angle,MAIN.VELOCITY,
                                             players.p1.body.velocity);
     }
-    else if (MAIN.cursor.down.isDown){
+    else if (cursor.down.isDown){
       game.physics.arcade.velocityFromAngle(players.p1.angle,
                                             -MAIN.VELOCITY,
                                             players.p1.body.velocity);
@@ -263,17 +265,17 @@ var mainState = {
       MAIN.checkpoints = LEVEL.createGroup();
       MAIN.createHelper.createCheckpoints(MAIN.checkpoints);
       MAIN.players = MAIN.createHelper.createPlayer();
-      MAIN.createHelper.createTimer();
-      MAIN.createHelper.createTimerText();
-      MAIN.createHelper.addKeyboard();
+      MAIN.timerText = MAIN.createHelper.createTimerText();
+      MAIN.createHelper.createTimer(MAIN.timerText);
+      MAIN.cursor = MAIN.createHelper.addKeyboard();
     },
 
     // update() called on frame refresh
     update:function() {
       MAIN.updateHelper.resetVelocity(MAIN.players);
       MAIN.updateHelper.detectCollision(MAIN.players, MAIN.platforms);
-      MAIN.updateHelper.detectVertMov(MAIN.players);
-      MAIN.updateHelper.detectHorMov(MAIN.players);
+      MAIN.updateHelper.detectVertMov(MAIN.players, MAIN.cursor);
+      MAIN.updateHelper.detectHorMov(MAIN.players, MAIN.cursor);
       MAIN.updateHelper.detectCheckptOverlap(MAIN.players, MAIN.checkpoints);
       MAIN.updateHelper.checkFinish(MAIN.checkpoints);
     }
