@@ -9,8 +9,8 @@ var game = game;
 
 MAIN.createHelper = {
   addKeyboard: function(){
-    var cursor = game.input.keyboard.createCursorKeys();
-    return cursor;
+    var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    return spaceKey;
   },
 
   createLand: function(platforms){
@@ -34,15 +34,27 @@ MAIN.createHelper = {
   },
 };
 
+MAIN.updateHelper = {
+  detectJump: function(player, spaceKey){
+    // Jump
+    if (spaceKey.isDown){
+      if (player.alive === false){
+        return;
+      }
+      player.body.velocity.y = -350;
+    }
+  },
+};
+
 var mainState = {
   create:function() {
-    MAIN.cursor = MAIN.createHelper.addKeyboard();    
+    MAIN.spaceKey = MAIN.createHelper.addKeyboard();    
     MAIN.platforms = LEVEL.createGroup();
     MAIN.createHelper.createLand(MAIN.platforms);
     MAIN.player = MAIN.createHelper.createPlayer();
   }, 
 
   update:function() {
-
+    MAIN.updateHelper.detectJump(MAIN.player, MAIN.spaceKey);
   }
 };
