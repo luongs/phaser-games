@@ -20,7 +20,7 @@ LOAD.preloadHelper = {
 
   loadImages: function() {
     game.load.image('player', 'assets/player.png');
-    game.load.image('land', 'assets/land.png');
+    game.load.image('platform', 'assets/platform.png');
   }
 };
 
