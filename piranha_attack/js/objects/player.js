@@ -25,7 +25,7 @@ Player.prototype.createSprite = function(){
 
 Player.prototype.enablePhysics = function(player){
   game.physics.arcade.enable(player);
-  player.body.gravity.y = 50;
+  player.body.gravity.y = 500;
 };
 
 Player.prototype.setAnchor = function(player){

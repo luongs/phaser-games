@@ -51,7 +51,7 @@ MAIN.updateHelper = {
       if (player.alive === false){
         return;
       }
-      player.body.velocity.y = -100;
+      player.body.velocity.y = -450;
     }
   },
 };
