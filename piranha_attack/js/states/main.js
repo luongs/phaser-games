@@ -25,6 +25,13 @@ MAIN.createHelper = {
     item = endLand.createStructure();
     endLand.changeScale(item, 1, 5);
   },
+
+  createPlayer: function(){
+    var player = new Player(game.world.width/2, game.world.height-50, 
+                            MAIN.P_IMG);
+    player = player.setupPlayer();
+    return player;
+  },
 };
 
 var mainState = {
@@ -32,6 +39,7 @@ var mainState = {
     MAIN.cursor = MAIN.createHelper.addKeyboard();    
     MAIN.platforms = LEVEL.createGroup();
     MAIN.createHelper.createLand(MAIN.platforms);
+    MAIN.player = MAIN.createHelper.createPlayer();
   }, 
 
   update:function() {
