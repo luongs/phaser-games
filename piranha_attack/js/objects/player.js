@@ -1,6 +1,7 @@
 // object for player creation
 var PLAYER = {
-  ANCHOR: 0.5
+  ANCHOR: 0.5,
+  Y_GRAVITY: 500
 };
 
 // game is a global variable set in game.js
@@ -25,7 +26,7 @@ Player.prototype.createSprite = function(){
 
 Player.prototype.enablePhysics = function(player){
   game.physics.arcade.enable(player);
-  player.body.gravity.y = 500;
+  player.body.gravity.y = PLAYER.Y_GRAVITY;
 };
 
 Player.prototype.setAnchor = function(player){
