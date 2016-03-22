@@ -26,7 +26,7 @@ Enemy.prototype.createSprite = function(){
 
 Enemy.prototype.enablePhysics = function(enemy){
   game.physics.arcade.enable(enemy);
-  player.body.gravity.y = ENEMY.Y_GRAVITY;
+  enemy.body.gravity.y = ENEMY.Y_GRAVITY;
 };
 
 Enemy.prototype.setAnchor = function(enemy){

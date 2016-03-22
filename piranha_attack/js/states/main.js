@@ -2,6 +2,8 @@
 var MAIN = {
   P_IMG : 'player',
   LAND_IMG : 'platform',
+  ENEMY_IMG: 'player',
+  ENEMY_VELOCITY: 50,
   DOUBLE_SCALE: 2,
 };
 
@@ -38,11 +40,20 @@ MAIN.createHelper = {
     console.log(player);
     return player;
   },
+
+  createEnemy: function(){
+    var item = null;
+    var enemy = new Enemy(0, game.world.height-180, MAIN.ENEMY_IMG);
+    item = enemy.setupEnemy();
+    enemy.setXVelocity(item, MAIN.ENEMY_VELOCITY);
+    return item;
+  },
 };
 
 MAIN.updateHelper = {
-  detectBottom: function(player, platforms){
+  detectSurface: function(player, enemy, platforms){
     game.physics.arcade.collide(player, platforms);
+    game.physics.arcade.collide(enemy, platforms);
   },
 
   detectJump: function(player, spaceKey){
@@ -62,10 +73,11 @@ var mainState = {
     MAIN.platforms = LEVEL.createGroup();
     MAIN.createHelper.createLand(MAIN.platforms);
     MAIN.player = MAIN.createHelper.createPlayer();
+    MAIN.enemy = MAIN.createHelper.createEnemy();
   }, 
 
   update:function() {
-    MAIN.updateHelper.detectBottom(MAIN.player, MAIN.platforms);
+    MAIN.updateHelper.detectSurface(MAIN.player, MAIN.enemy, MAIN.platforms);
     MAIN.updateHelper.detectJump(MAIN.player, MAIN.spaceKey);
   }
 };
