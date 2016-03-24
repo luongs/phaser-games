@@ -52,6 +52,8 @@ MAIN.createHelper = {
     return item;
   },
 
+  //TODO: Make enemy stop at edge and jump at random time to the other side
+
   // Definitely a hack to update the enemy global instance
   // TODO: figure out how to get return parameters from a callback
   // function
