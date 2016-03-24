@@ -49,6 +49,13 @@ MAIN.createHelper = {
     enemy.setXVelocity(item, MAIN.ENEMY_VELOCITY);
     return item;
   },
+
+  // Definitely a hack to update the enemy global instance
+  // TODO: figure out how to get return parameters from a callback
+  // function
+  createTimerEnemy: function(){
+    MAIN.enemy = MAIN.createHelper.createEnemy();
+  },
 };
 
 MAIN.updateHelper = {
@@ -67,8 +74,9 @@ MAIN.updateHelper = {
   },
 
   spawnEnemy: function(){
-    // Set random timer 
-    return MAIN.createHelper.createEnemy();    
+    // Spawn new enemy at random time between .5 to 2 seconds
+    var randTime = Math.random() * (2000-500)+500;
+    window.setTimeout(MAIN.createHelper.createTimerEnemy, randTime);
   },
   
   // TODO
@@ -101,7 +109,7 @@ var mainState = {
     if (MAIN.updateHelper.detectEnemy(MAIN.player, MAIN.enemy)){
       MAIN.updateHelper.destroyEnemy(MAIN.enemy);
       MAIN.updateHelper.updatePoints();
-      MAIN.enemy = MAIN.updateHelper.spawnEnemy();
+      MAIN.updateHelper.spawnEnemy();
     }
     MAIN.updateHelper.detectJump(MAIN.player, MAIN.spaceKey);
   }
