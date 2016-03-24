@@ -4,6 +4,8 @@ var MAIN = {
   LAND_IMG : 'platform',
   ENEMY_IMG: 'player',
   ENEMY_VELOCITY: 150,
+  ENEMY_MIN_T: 500,
+  ENEMY_MAX_T: 2000,
   Y_GRAVITY: -450,
   DOUBLE_SCALE: 2,
 };
@@ -65,7 +67,7 @@ MAIN.updateHelper = {
   },
 
   detectEnemy: function(player, enemy){
-    return game.physics.arcade.collide(player, enemy);
+    return game.physics.arcade.overlap(player,enemy);
   },
 
   destroyEnemy: function(enemy){
@@ -75,7 +77,8 @@ MAIN.updateHelper = {
 
   spawnEnemy: function(){
     // Spawn new enemy at random time between .5 to 2 seconds
-    var randTime = Math.random() * (2000-500)+500;
+    var randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
+      MAIN.ENEMY_MIN_T;
     window.setTimeout(MAIN.createHelper.createTimerEnemy, randTime);
   },
   
