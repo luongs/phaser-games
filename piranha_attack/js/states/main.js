@@ -58,11 +58,22 @@ MAIN.updateHelper = {
   },
 
   detectEnemy: function(player, enemy){
-    if (game.physics.arcade.collide(player, enemy)){
-      console.log("Collision");
-      enemy.body = null;
-      enemy.destroy();
-    }
+    return game.physics.arcade.collide(player, enemy);
+  },
+
+  destroyEnemy: function(enemy){
+    enemy.body = null;
+    enemy.destroy();
+  },
+
+  spawnEnemy: function(){
+    // Set random timer 
+    // create new enemy when timer runs out
+  },
+  
+  // TODO
+  updatePoints: function(){
+
   },
 
   detectJump: function(player, spaceKey){
@@ -87,7 +98,11 @@ var mainState = {
 
   update:function() {
     MAIN.updateHelper.detectSurface(MAIN.player, MAIN.enemy, MAIN.platforms);
-    MAIN.updateHelper.detectEnemy(MAIN.player, MAIN.enemy);
+    if (MAIN.updateHelper.detectEnemy(MAIN.player, MAIN.enemy)){
+      MAIN.updateHelper.destroyEnemy(MAIN.enemy);
+      MAIN.updateHelper.spawnEnemy();
+      MAIN.updateHelper.updatePoints();
+    }
     MAIN.updateHelper.detectJump(MAIN.player, MAIN.spaceKey);
   }
 };
