@@ -3,7 +3,8 @@ var MAIN = {
   P_IMG : 'player',
   LAND_IMG : 'platform',
   ENEMY_IMG: 'player',
-  ENEMY_VELOCITY: 50,
+  ENEMY_VELOCITY: 150,
+  Y_GRAVITY: -450,
   DOUBLE_SCALE: 2,
 };
 
@@ -56,13 +57,21 @@ MAIN.updateHelper = {
     game.physics.arcade.collide(enemy, platforms);
   },
 
+  detectEnemy: function(player, enemy){
+    if (game.physics.arcade.collide(player, enemy)){
+      console.log("Collision");
+      enemy.body = null;
+      enemy.destroy();
+    }
+  },
+
   detectJump: function(player, spaceKey){
     // Jump when sprite is stationary
     if (spaceKey.isDown && player.body.velocity.y === 0){
       if (player.alive === false){
         return;
       }
-      player.body.velocity.y = -450;
+      player.body.velocity.y = MAIN.Y_GRAVITY;
     }
   },
 };
@@ -78,6 +87,7 @@ var mainState = {
 
   update:function() {
     MAIN.updateHelper.detectSurface(MAIN.player, MAIN.enemy, MAIN.platforms);
+    MAIN.updateHelper.detectEnemy(MAIN.player, MAIN.enemy);
     MAIN.updateHelper.detectJump(MAIN.player, MAIN.spaceKey);
   }
 };
