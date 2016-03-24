@@ -68,7 +68,7 @@ MAIN.updateHelper = {
 
   spawnEnemy: function(){
     // Set random timer 
-    // create new enemy when timer runs out
+    return MAIN.createHelper.createEnemy();    
   },
   
   // TODO
@@ -100,8 +100,8 @@ var mainState = {
     MAIN.updateHelper.detectSurface(MAIN.player, MAIN.enemy, MAIN.platforms);
     if (MAIN.updateHelper.detectEnemy(MAIN.player, MAIN.enemy)){
       MAIN.updateHelper.destroyEnemy(MAIN.enemy);
-      MAIN.updateHelper.spawnEnemy();
       MAIN.updateHelper.updatePoints();
+      MAIN.enemy = MAIN.updateHelper.spawnEnemy();
     }
     MAIN.updateHelper.detectJump(MAIN.player, MAIN.spaceKey);
   }
