@@ -3,6 +3,8 @@ var MAIN = {
   P_IMG : 'player',
   LAND_IMG : 'platform',
   ENEMY_IMG: 'player',
+  ENEMY_X: 0,
+  ENEMY_Y: 600-175, // 600 is screen height
   ENEMY_VELOCITY: 150,
   ENEMY_MIN_T: 500,
   ENEMY_MAX_T: 2000,
@@ -46,13 +48,12 @@ MAIN.createHelper = {
 
   createEnemy: function(){
     var item = null;
-    var enemy = new Enemy(0, game.world.height-180, MAIN.ENEMY_IMG);
+    var enemy = new Enemy(MAIN.ENEMY_X, MAIN.ENEMY_Y, MAIN.ENEMY_IMG);
     item = enemy.setupEnemy();
     enemy.setXVelocity(item, MAIN.ENEMY_VELOCITY);
     return item;
   },
 
-  //TODO: Make enemy stop at edge and jump at random time to the other side
 
   // Definitely a hack to update the enemy global instance
   // TODO: figure out how to get return parameters from a callback
@@ -84,6 +85,14 @@ MAIN.updateHelper = {
     window.setTimeout(MAIN.createHelper.createTimerEnemy, randTime);
   },
   
+  //TODO: Make enemy stop at edge and jump at random time to the other side
+
+  enemyStopAndJump: function(enemy){
+    if (enemy.y > MAIN.ENEMY_Y && enemy.alive){
+      console.log("x: "+enemy.x);
+    }
+  },
+
   // TODO
   updatePoints: function(){
 
@@ -111,6 +120,7 @@ var mainState = {
 
   update:function() {
     MAIN.updateHelper.detectSurface(MAIN.player, MAIN.enemy, MAIN.platforms);
+    MAIN.updateHelper.enemyStopAndJump(MAIN.enemy);
     if (MAIN.updateHelper.detectEnemy(MAIN.player, MAIN.enemy)){
       MAIN.updateHelper.destroyEnemy(MAIN.enemy);
       MAIN.updateHelper.updatePoints();
