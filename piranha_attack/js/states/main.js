@@ -104,7 +104,8 @@ MAIN.updateHelper = {
 
   detectJump: function(player, spaceKey){
     // Jump when sprite is stationary
-    if (spaceKey.isDown && player.body.velocity.y === 0){
+    if (spaceKey.isDown && 
+        (player.body.velocity.y <= 0 && player.body.velocity.y > -30)){
       if (player.alive === false){
         return;
       }
