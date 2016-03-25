@@ -88,8 +88,12 @@ MAIN.updateHelper = {
   //TODO: Make enemy stop at edge and jump at random time to the other side
 
   enemyStopAndJump: function(enemy){
-    if (enemy.y > MAIN.ENEMY_Y && enemy.alive){
-      console.log("x: "+enemy.x);
+    if (enemy.x > 300 && enemy.x < 485 && enemy.alive &&
+        (enemy.body.velocity.y <= 0 && enemy.body.velocity.y > -1)){
+      enemy.body.velocity.x = 110;
+      enemy.body.velocity.y = -250;
+      //TODO Spawn only one enemy if it crosses the other side
+      console.log("x: "+enemy.body.velocity.y);
     }
   },
 

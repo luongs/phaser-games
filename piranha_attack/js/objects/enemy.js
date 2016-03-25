@@ -17,6 +17,8 @@ Enemy.prototype.setupEnemy = function(){
   var enemy = this.createSprite();
   this.enablePhysics(enemy);
   this.setAnchor(enemy);
+  enemy.checkWorldBounds = true;
+  enemy.outOfBoundsKill = true;
   return enemy;
 };
 
