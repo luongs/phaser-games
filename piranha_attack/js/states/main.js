@@ -1,3 +1,4 @@
+var game = game;
 
 var MAIN = {
   P_IMG : 'player',
@@ -5,14 +6,8 @@ var MAIN = {
   ENEMY_IMG: 'player',
   ENEMY_X: 0,
   ENEMY_Y: 600-175, // 600 is screen height
-  ENEMY_VELOCITY: 150,
-  ENEMY_MIN_T: 500,
-  ENEMY_MAX_T: 2000,
-  Y_GRAVITY: -450,
-  DOUBLE_SCALE: 2,
+  ENEMY_VELOCITY: 150
 };
-
-var game = game;
 
 MAIN.createHelper = {
   addKeyboard: function(){
@@ -63,6 +58,10 @@ MAIN.createHelper = {
   },
 };
 
+MAIN.ENEMY_MIN_T = 500;
+MAIN.ENEMY_MAX_T= 2000;
+MAIN.Y_GRAVITY= -450;
+
 MAIN.updateHelper = {
   detectSurface: function(player, enemy, platforms){
     game.physics.arcade.collide(player, platforms);
@@ -103,7 +102,7 @@ MAIN.updateHelper = {
   },
 
   detectJump: function(player, spaceKey){
-    // Jump when sprite is stationary
+    // Jump when sprite is stationary or at the apex of a jump
     if (spaceKey.isDown && 
         (player.body.velocity.y <= 0 && player.body.velocity.y > -30)){
       if (player.alive === false){
