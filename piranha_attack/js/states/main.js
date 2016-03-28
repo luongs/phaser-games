@@ -34,7 +34,7 @@ MAIN.createHelper = {
   },
 
   createPlayer: function(){
-    var player = new Player(game.world.width/2, game.world.height-50, 
+    var player = new Player(game.world.width/2, game.world.height-50,
                             MAIN.P_IMG);
     player = player.setupPlayer();
     console.log(player);
@@ -50,10 +50,13 @@ MAIN.createHelper = {
   },
 
   // Definitely a hack to update the enemy global instance
+  // and also change the respawn value
   // TODO: figure out how to get return parameters from a callback
   // function
+  // TODO: figure out what to do with global respawn variable
   createTimerEnemy: function(){
     MAIN.enemy = MAIN.createHelper.createEnemy();
+    MAIN.respawn = false;
   },
 };
 
@@ -86,7 +89,7 @@ MAIN.updateHelper = {
                   MAIN.ENEMY_MIN_T;
     window.setTimeout(MAIN.createHelper.createTimerEnemy, randTime);
   },
-  
+
   //TODO: Make enemy stop at edge and jump at random time to the other side
 
   enemyStopAndJump: function(enemy){
@@ -106,7 +109,7 @@ MAIN.updateHelper = {
 
   detectJump: function(player, spaceKey){
     // Jump when sprite is stationary or at the apex of a jump
-    if (spaceKey.isDown && 
+    if (spaceKey.isDown &&
         (player.body.velocity.y <= 0 && player.body.velocity.y > -30)){
       if (player.alive === false){
         return;
@@ -118,27 +121,33 @@ MAIN.updateHelper = {
 
 var mainState = {
   create:function() {
-    MAIN.spaceKey = MAIN.createHelper.addKeyboard();    
+    MAIN.spaceKey = MAIN.createHelper.addKeyboard();
     MAIN.platforms = LEVEL.createGroup();
     MAIN.createHelper.createLand(MAIN.platforms);
     MAIN.player = MAIN.createHelper.createPlayer();
     MAIN.enemy = MAIN.createHelper.createEnemy();
-  }, 
+    MAIN.respawn = false; // check if enemy should be respawned
+  },
 
   update:function() {
     MAIN.updateHelper.detectSurface(MAIN.player, MAIN.enemy, MAIN.platforms);
     MAIN.updateHelper.enemyStopAndJump(MAIN.enemy);
 
-    if (MAIN.updateHelper.enemyIsOutOfBounds(MAIN.enemy)){
-      console.log("Game Over");
-      // Return to main menu for now
-      game.state.start('menu');
-    }
-
     if (MAIN.updateHelper.detectEnemy(MAIN.player, MAIN.enemy)){
       MAIN.updateHelper.destroyEnemy(MAIN.enemy);
       MAIN.updateHelper.updatePoints();
       MAIN.updateHelper.spawnEnemy();
+      MAIN.respawn = true;
+    }
+
+    // respawn is set to false after initial call or after a new
+    // enemy is spawned
+    if (MAIN.respawn === false &&
+        MAIN.updateHelper.enemyIsOutOfBounds(MAIN.enemy)){
+
+      console.log("Game Over");
+      // Return to main menu for now
+      game.state.start('menu');
     }
 
     MAIN.updateHelper.detectJump(MAIN.player, MAIN.spaceKey);
