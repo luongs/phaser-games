@@ -49,7 +49,6 @@ MAIN.createHelper = {
     return item;
   },
 
-
   // Definitely a hack to update the enemy global instance
   // TODO: figure out how to get return parameters from a callback
   // function
@@ -72,15 +71,19 @@ MAIN.updateHelper = {
     return game.physics.arcade.overlap(player,enemy);
   },
 
+  enemyIsOutOfBounds: function(enemy){
+    return enemy.inWorld === false;
+  },
+
   destroyEnemy: function(enemy){
     enemy.body = null;
     enemy.destroy();
   },
 
   spawnEnemy: function(){
-    // Spawn new enemy at random time between .5 to 2 seconds
+    // Spawn enemy at random time between .5 and 2 seconds
     var randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
-      MAIN.ENEMY_MIN_T;
+                  MAIN.ENEMY_MIN_T;
     window.setTimeout(MAIN.createHelper.createTimerEnemy, randTime);
   },
   
@@ -125,11 +128,19 @@ var mainState = {
   update:function() {
     MAIN.updateHelper.detectSurface(MAIN.player, MAIN.enemy, MAIN.platforms);
     MAIN.updateHelper.enemyStopAndJump(MAIN.enemy);
+
+    if (MAIN.updateHelper.enemyIsOutOfBounds(MAIN.enemy)){
+      console.log("Game Over");
+      // Return to main menu for now
+      game.state.start('menu');
+    }
+
     if (MAIN.updateHelper.detectEnemy(MAIN.player, MAIN.enemy)){
       MAIN.updateHelper.destroyEnemy(MAIN.enemy);
       MAIN.updateHelper.updatePoints();
       MAIN.updateHelper.spawnEnemy();
     }
+
     MAIN.updateHelper.detectJump(MAIN.player, MAIN.spaceKey);
   }
 };
