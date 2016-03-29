@@ -95,6 +95,7 @@ MAIN.updateHelper = {
   },
 
   enemyStopAndJump: function(enemy){
+    // Makes enemy jump between 1 and 3 jumps
     var maxChk = this.getRandomNum(350, 485);
     if (enemy.x > 300 && enemy.x < maxChk && enemy.alive &&
         (enemy.body.velocity.y <= 0 && enemy.body.velocity.y > -0.1)){
