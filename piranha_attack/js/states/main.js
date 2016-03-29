@@ -58,6 +58,13 @@ MAIN.createHelper = {
     MAIN.enemy = MAIN.createHelper.createEnemy();
     MAIN.respawn = false;
   },
+
+  createPointsText: function(points){
+    var style = {font: '50px Arial', fill: '#ffffff'};
+    var pointsText = game.add.text(game.world.width/2, 18, points, style);
+    pointsText.text = points;
+    return pointsText;
+  }
 };
 
 MAIN.ENEMY_MIN_T = 500;
@@ -103,9 +110,8 @@ MAIN.updateHelper = {
     }
   },
 
-  // TODO
-  updatePoints: function(){
-
+  updatePoints: function(points, pointsText){
+    pointsText.text = points;
   },
 
   detectJump: function(player, spaceKey){
@@ -128,6 +134,8 @@ var mainState = {
     MAIN.player = MAIN.createHelper.createPlayer();
     MAIN.enemy = MAIN.createHelper.createEnemy();
     MAIN.respawn = false; // check if enemy should be respawned
+    MAIN.points = 0;
+    MAIN.pointsText = MAIN.createHelper.createPointsText(MAIN.points);
   },
 
   update:function() {
@@ -136,16 +144,16 @@ var mainState = {
 
     if (MAIN.updateHelper.detectEnemy(MAIN.player, MAIN.enemy)){
       MAIN.updateHelper.destroyEnemy(MAIN.enemy);
-      MAIN.updateHelper.updatePoints();
       MAIN.updateHelper.spawnEnemy();
       MAIN.respawn = true;
+      MAIN.points += 1;
+      MAIN.updateHelper.updatePoints(MAIN.points, MAIN.pointsText);
     }
 
     // respawn is set to false after initial call or after a new
     // enemy is spawned
     if (MAIN.respawn === false &&
         MAIN.updateHelper.enemyIsOutOfBounds(MAIN.enemy)){
-
       console.log("Game Over");
       // Return to main menu for now
       game.state.start('menu');
