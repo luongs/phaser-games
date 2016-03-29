@@ -90,15 +90,15 @@ MAIN.updateHelper = {
     window.setTimeout(MAIN.createHelper.createTimerEnemy, randTime);
   },
 
-  //TODO: Make enemy stop at edge and jump at random time to the other side
+  getRandomNum: function(min, max){
+    return Math.floor(Math.random()* (max-min+1)) + min;
+  },
 
   enemyStopAndJump: function(enemy){
-    if (enemy.x > 300 && enemy.x < 485 && enemy.alive &&
-        (enemy.body.velocity.y <= 0 && enemy.body.velocity.y > -1)){
-      enemy.body.velocity.x = 110;
-      enemy.body.velocity.y = -250;
-      //TODO Spawn only one enemy if it crosses the other side
-      console.log("x: "+enemy.body.velocity.y);
+    var maxChk = this.getRandomNum(350, 485);
+    if (enemy.x > 300 && enemy.x < maxChk && enemy.alive &&
+        (enemy.body.velocity.y <= 0 && enemy.body.velocity.y > -0.1)){
+      enemy.body.velocity.y = -300;
     }
   },
 
