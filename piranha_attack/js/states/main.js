@@ -101,13 +101,27 @@ MAIN.updateHelper = {
     return Math.floor(Math.random()* (max-min+1)) + min;
   },
 
+  resetEnemyVelocity: function(enemy){
+    if (enemy.alive){
+      enemy.body.velocity.x = MAIN.ENEMY_VELOCITY;
+    }
+  },
+
   enemyStopAndJump: function(enemy){
+    if (enemy.x > 295 && enemy.x <= 300){
+      enemy.body.velocity.x = 0;
+      var randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
+                    MAIN.ENEMY_MIN_T;
+      window.setTimeout(this.resetEnemyVelocity, randTime, enemy);
+    }
+
     // Makes enemy jump between 1 and 3 jumps
     var maxChk = this.getRandomNum(350, 485);
     if (enemy.x > 300 && enemy.x < maxChk && enemy.alive &&
         (enemy.body.velocity.y <= 0 && enemy.body.velocity.y > -0.1)){
       enemy.body.velocity.y = -400;
     }
+
   },
 
   updatePoints: function(points, pointsText){
