@@ -38,3 +38,7 @@ Enemy.prototype.setAnchor = function(enemy){
 Enemy.prototype.setXVelocity = function(enemy, velocity){
   enemy.body.velocity.x = velocity;
 };
+
+Enemy.prototype.setGravity = function(enemy, gravity){
+  enemy.body.gravity.y = gravity;
+};

@@ -6,7 +6,11 @@ var MAIN = {
   ENEMY_IMG: 'player',
   ENEMY_X: 0,
   ENEMY_Y: 600-175, // 600 is screen height
-  ENEMY_VELOCITY: 150
+  ENEMY_VELOCITY: 150,
+  BIRD_X: 0,
+  BIRD_Y: 600-300,
+  BIRD_GRAVITY: 0,
+  BIRD_VELOCITY: 150
 };
 
 MAIN.createHelper = {
@@ -49,6 +53,15 @@ MAIN.createHelper = {
     return item;
   },
 
+  createBird: function(){
+    var item = null;
+    var enemy = new Enemy(MAIN.BIRD_X, MAIN.BIRD_Y, MAIN.ENEMY_IMG);
+    item = enemy.setupEnemy();
+    enemy.setXVelocity(item, MAIN.BIRD_VELOCITY);
+    enemy.setGravity(item, MAIN.BIRD_GRAVITY);
+    return item;
+  },
+
   // Definitely a hack to update the enemy global instance
   // and also change the respawn value
   // TODO: figure out how to get return parameters from a callback
@@ -69,6 +82,7 @@ MAIN.createHelper = {
 
 MAIN.ENEMY_MIN_T = 500;
 MAIN.ENEMY_MAX_T= 2000;
+MAIN.ENEMY_Y_GRAVITY = -300;
 MAIN.Y_GRAVITY= -400;
 
 MAIN.updateHelper = {
@@ -109,7 +123,7 @@ MAIN.updateHelper = {
     var maxChk = MAIN.updateHelper.getRandomNum(350, 485);
     if (enemy.x > 300 && enemy.x < maxChk && enemy.alive &&
         (enemy.body.velocity.y <= 0 && enemy.body.velocity.y > -0.1)){
-      enemy.body.velocity.y = -400;
+      enemy.body.velocity.y = MAIN.ENEMY_Y_GRAVITY;
     }
   },
 
@@ -126,7 +140,7 @@ MAIN.updateHelper = {
     pointsText.text = points;
   },
 
-  detectJump: function(player, spaceKey){
+  jump: function(player, spaceKey){
     // Jump when sprite is stationary or at the apex of a jump
     if (spaceKey.isDown &&
         (player.body.velocity.y <= 0 && player.body.velocity.y > -30)){
@@ -145,6 +159,10 @@ var mainState = {
     MAIN.createHelper.createLand(MAIN.platforms);
     MAIN.player = MAIN.createHelper.createPlayer();
     MAIN.enemy = MAIN.createHelper.createEnemy();
+    // TODO: Randomize when bird appears
+    // Collision with bird and +3 points
+    // Slow bird velocity
+    MAIN.bird = MAIN.createHelper.createBird();
     MAIN.respawn = false; // check if enemy should be respawned
     MAIN.points = 0;
     MAIN.pointsText = MAIN.createHelper.createPointsText(MAIN.points);
@@ -171,6 +189,6 @@ var mainState = {
       game.state.start('menu');
     }
 
-    MAIN.updateHelper.detectJump(MAIN.player, MAIN.spaceKey);
+    MAIN.updateHelper.jump(MAIN.player, MAIN.spaceKey);
   }
 };
