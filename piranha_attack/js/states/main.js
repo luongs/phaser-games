@@ -95,6 +95,10 @@ MAIN.updateHelper = {
     return game.physics.arcade.overlap(player,enemy);
   },
 
+  detectBird: function(player, bird){
+    return game.physics.arcade.overlap(player,bird);
+  },
+
   enemyIsOutOfBounds: function(enemy){
     return enemy.inWorld === false;
   },
@@ -103,6 +107,13 @@ MAIN.updateHelper = {
     enemy.body = null;
     enemy.destroy();
   },
+
+  destroyBird: function(bird){
+    bird.body = null;
+    bird.destroy();
+  },
+
+
 
   spawnEnemy: function(){
     // Spawn enemy at random time between .5 and 2 seconds
@@ -160,7 +171,6 @@ var mainState = {
     MAIN.player = MAIN.createHelper.createPlayer();
     MAIN.enemy = MAIN.createHelper.createEnemy();
     // TODO: Randomize when bird appears
-    // Collision with bird and +3 points
     // Slow bird velocity
     MAIN.bird = MAIN.createHelper.createBird();
     MAIN.respawn = false; // check if enemy should be respawned
@@ -177,6 +187,12 @@ var mainState = {
       MAIN.updateHelper.spawnEnemy();
       MAIN.respawn = true;
       MAIN.points += 1;
+      MAIN.updateHelper.updatePoints(MAIN.points, MAIN.pointsText);
+    }
+
+    if (MAIN.updateHelper.detectBird(MAIN.player, MAIN.bird)){
+      MAIN.updateHelper.destroyBird(MAIN.bird);
+      MAIN.points += 3;
       MAIN.updateHelper.updatePoints(MAIN.points, MAIN.pointsText);
     }
 
