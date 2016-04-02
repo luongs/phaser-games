@@ -10,7 +10,8 @@ var MAIN = {
   BIRD_X: 0,
   BIRD_Y: 600-300,
   BIRD_GRAVITY: 0,
-  BIRD_VELOCITY: 150
+  BIRD_VELOCITY: 100,
+  BIRD_SPAWN_CTR: 500
 };
 
 MAIN.createHelper = {
@@ -19,6 +20,7 @@ MAIN.createHelper = {
     return spaceKey;
   },
 
+  //TODO: Decrease screen dimensions
   createLand: function(platforms){
     var item = null;
     var startLand = new Structure(-90, game.world.height-150, MAIN.LAND_IMG,
@@ -37,6 +39,7 @@ MAIN.createHelper = {
     endLand.changeScale(item, 1, 5);
   },
 
+  // TODO: Slow rate when player under water
   createPlayer: function(){
     var player = new Player(game.world.width/2, game.world.height-50,
                             MAIN.P_IMG);
@@ -70,6 +73,12 @@ MAIN.createHelper = {
   createTimerEnemy: function(){
     MAIN.enemy = MAIN.createHelper.createEnemy();
     MAIN.respawn = false;
+  },
+
+  // TODO: figure out how to return bird instead of changing
+  // global variable here
+  createTimerBird: function(){
+    MAIN.bird = MAIN.createHelper.createBird();
   },
 
   createPointsText: function(points){
@@ -122,6 +131,19 @@ MAIN.updateHelper = {
     window.setTimeout(MAIN.createHelper.createTimerEnemy, randTime);
   },
 
+  incrementCtrAndSpawnBird: function(counter){
+    if (counter === MAIN.BIRD_SPAWN_CTR){
+      var randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
+                     MAIN.ENEMY_MIN_T;
+      window.setTimeout(MAIN.createHelper.createTimerBird, randTime);
+      counter = 0;
+      return counter;
+    }
+    else{
+      return counter+1;
+    }
+  },
+
   getRandomNum: function(min, max){
     return Math.floor(Math.random()* (max-min+1)) + min;
   },
@@ -170,10 +192,9 @@ var mainState = {
     MAIN.createHelper.createLand(MAIN.platforms);
     MAIN.player = MAIN.createHelper.createPlayer();
     MAIN.enemy = MAIN.createHelper.createEnemy();
-    // TODO: Randomize when bird appears
-    // Slow bird velocity
     MAIN.bird = MAIN.createHelper.createBird();
     MAIN.respawn = false; // check if enemy should be respawned
+    MAIN.birdSpawnCtr = 0;  // prevent constant spawning of birds
     MAIN.points = 0;
     MAIN.pointsText = MAIN.createHelper.createPointsText(MAIN.points);
   },
@@ -190,6 +211,8 @@ var mainState = {
       MAIN.updateHelper.updatePoints(MAIN.points, MAIN.pointsText);
     }
 
+    MAIN.birdSpawnCtr = MAIN.updateHelper.incrementCtrAndSpawnBird(
+                                               MAIN.birdSpawnCtr);
     if (MAIN.updateHelper.detectBird(MAIN.player, MAIN.bird)){
       MAIN.updateHelper.destroyBird(MAIN.bird);
       MAIN.points += 3;
