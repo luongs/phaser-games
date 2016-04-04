@@ -1,5 +1,5 @@
 var GAME = {
-  screen_width: 800,
+  screen_width: 750,
   screen_height: 600
 };
 

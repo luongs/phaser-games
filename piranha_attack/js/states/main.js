@@ -21,6 +21,7 @@ MAIN.createHelper = {
   },
 
   //TODO: Decrease screen dimensions
+  // Create nicer landscape
   createLand: function(platforms){
     var item = null;
     var startLand = new Structure(-90, game.world.height-150, MAIN.LAND_IMG,
@@ -28,7 +29,7 @@ MAIN.createHelper = {
     item = startLand.createStructure();
     startLand.changeScale(item, 1 , 5);
 
-    var stopPoint = new Structure(400, game.world.height-25, MAIN.LAND_IMG,
+    var stopPoint = new Structure(300, game.world.height-25, MAIN.LAND_IMG,
                                   platforms);
     item = stopPoint.createStructure();
     stopPoint.changeScale(item,1,1);
@@ -40,6 +41,7 @@ MAIN.createHelper = {
   },
 
   // TODO: Slow rate when player under water
+  // Add actual sprites for player, enemy and bird
   createPlayer: function(){
     var player = new Player(game.world.width/2, game.world.height-50,
                             MAIN.P_IMG);
