@@ -185,6 +185,18 @@ MAIN.updateHelper = {
       player.body.velocity.y = MAIN.Y_GRAVITY;
     }
   },
+
+  checkUnderwater: function(player){
+    return (player.y >= game.height - 150 && player.y < game.height - 25);
+  },
+
+  checkStationary: function(player){
+    return (player.body.velocity.y === 0);
+  },
+
+  increaseGravity: function(){
+    return MAIN.Y_GRAVITY+200;
+  }
 };
 
 var mainState = {
@@ -221,6 +233,12 @@ var mainState = {
       MAIN.updateHelper.updatePoints(MAIN.points, MAIN.pointsText);
     }
 
+    if (MAIN.updateHelper.checkUnderwater(MAIN.player) &&
+        !MAIN.updateHelper.checkStationary(MAIN.player)){
+     // MAIN.player.body.velocity.y = MAIN.updateHelper.increaseGravity();
+     console.log("underwater");
+    }
+    //console.log(MAIN.player.body.velocity.y);
     // respawn is set to false after initial call or after a new
     // enemy is spawned
     if (MAIN.respawn === false &&
