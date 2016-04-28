@@ -198,7 +198,7 @@ MAIN.updateHelper = {
     return (player.body.velocity.y === 0);
   },
 
-  increaseGravity: function(player, increment){
+  changeGravity: function(player, increment){
     return MAIN.player.body.velocity.y += increment;
   }
 };
@@ -242,10 +242,13 @@ var mainState = {
 
     if (MAIN.updateHelper.checkUnderwater(MAIN.player) &&
         !MAIN.updateHelper.checkStationary(MAIN.player)){
-     MAIN.player.body.velocity.y = MAIN.updateHelper.increaseGravity(MAIN.player, MAIN.UNDERWATER_Y);
+     MAIN.player.body.velocity.y = MAIN.updateHelper.changeGravity(MAIN.player,
+                                                            MAIN.UNDERWATER_Y);
     }
-    else if (MAIN.updateHelper.checkAboveWater(MAIN.player) && !MAIN.updateHelper.checkStationary(MAIN.player)){
-      MAIN.player.body.velocity.y = MAIN.updateHelper.increaseGravity(MAIN.player, MAIN.ABOVEWATER_Y);
+    else if (MAIN.updateHelper.checkAboveWater(MAIN.player)
+              && !MAIN.updateHelper.checkStationary(MAIN.player)){
+      MAIN.player.body.velocity.y = MAIN.updateHelper.changeGravity(MAIN.player,
+                                                              MAIN.ABOVEWATER_Y);
     }
 
     // respawn is set to false after initial call or after a new
