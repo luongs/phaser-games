@@ -5,10 +5,10 @@ var MAIN = {
   LAND_IMG : 'platform',
   ENEMY_IMG: 'player',
   ENEMY_X: 0,
-  ENEMY_Y: 600-175, // 600 is screen height
+  ENEMY_Y: 600-205, // 600 is screen height
   ENEMY_VELOCITY: 150,
   BIRD_X: 0,
-  BIRD_Y: 600-300,
+  BIRD_Y: 600-330,
   BIRD_GRAVITY: 0,
   BIRD_VELOCITY: 100,
   BIRD_SPAWN_CTR: 500
@@ -21,23 +21,22 @@ MAIN.createHelper = {
   },
 
   //TODO: Decrease screen dimensions
-  // Create nicer landscape
   createLand: function(platforms){
     var item = null;
-    var startLand = new Structure(-90, game.world.height-150, MAIN.LAND_IMG,
+    var startLand = new Structure(-90, game.world.height-180, MAIN.LAND_IMG,
                                   platforms);
     item = startLand.createStructure();
-    startLand.changeScale(item, 1 , 5);
+    startLand.changeScale(item, 1 , 6);
 
     var stopPoint = new Structure(300, game.world.height-25, MAIN.LAND_IMG,
                                   platforms);
     item = stopPoint.createStructure();
     stopPoint.changeScale(item,1,1);
 
-    var endLand = new Structure(game.world.width-300, game.world.height-150,
+    var endLand = new Structure(game.world.width-300, game.world.height-180,
                             MAIN.LAND_IMG, platforms);
     item = endLand.createStructure();
-    endLand.changeScale(item, 1, 5);
+    endLand.changeScale(item, 1, 6);
   },
 
   // TODO: Slow rate when player under water
@@ -93,8 +92,9 @@ MAIN.createHelper = {
 
 MAIN.ENEMY_MIN_T = 500;
 MAIN.ENEMY_MAX_T= 2000;
-MAIN.ENEMY_Y_GRAVITY = -300;
-MAIN.Y_GRAVITY= -400;
+MAIN.ENEMY_Y_GRAVITY = -270;
+MAIN.Y_GRAVITY= -470;
+MAIN.ADDED_GRAVITY = 5;
 
 MAIN.updateHelper = {
   detectSurface: function(player, enemy, platforms){
@@ -187,15 +187,15 @@ MAIN.updateHelper = {
   },
 
   checkUnderwater: function(player){
-    return (player.y >= game.height - 150 && player.y < game.height - 25);
+    return (player.y >= game.height - 380 && player.y < game.height - 25);
   },
 
   checkStationary: function(player){
     return (player.body.velocity.y === 0);
   },
 
-  increaseGravity: function(){
-    return MAIN.Y_GRAVITY+200;
+  increaseGravity: function(player){
+    return MAIN.player.body.velocity.y += MAIN.ADDED_GRAVITY;
   }
 };
 
@@ -235,10 +235,10 @@ var mainState = {
 
     if (MAIN.updateHelper.checkUnderwater(MAIN.player) &&
         !MAIN.updateHelper.checkStationary(MAIN.player)){
-     // MAIN.player.body.velocity.y = MAIN.updateHelper.increaseGravity();
+     MAIN.player.body.velocity.y = MAIN.updateHelper.increaseGravity(MAIN.player);
      console.log("underwater");
     }
-    //console.log(MAIN.player.body.velocity.y);
+
     // respawn is set to false after initial call or after a new
     // enemy is spawned
     if (MAIN.respawn === false &&
