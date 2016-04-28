@@ -187,17 +187,24 @@ MAIN.updateHelper = {
   },
 
   checkUnderwater: function(player){
-    return (player.y >= game.height - 380 && player.y < game.height - 25);
+    return (player.y >= game.height - 180 && player.y < game.height - 25);
+  },
+
+  checkAboveWater: function(player){
+    return (player.y >= game.height - 380);
   },
 
   checkStationary: function(player){
     return (player.body.velocity.y === 0);
   },
 
-  increaseGravity: function(player){
-    return MAIN.player.body.velocity.y += MAIN.ADDED_GRAVITY;
+  increaseGravity: function(player, increment){
+    return MAIN.player.body.velocity.y += increment;
   }
 };
+
+MAIN.UNDERWATER_Y = 5;
+MAIN.ABOVEWATER_Y = 3;
 
 var mainState = {
   create:function() {
@@ -235,8 +242,10 @@ var mainState = {
 
     if (MAIN.updateHelper.checkUnderwater(MAIN.player) &&
         !MAIN.updateHelper.checkStationary(MAIN.player)){
-     MAIN.player.body.velocity.y = MAIN.updateHelper.increaseGravity(MAIN.player);
-     console.log("underwater");
+     MAIN.player.body.velocity.y = MAIN.updateHelper.increaseGravity(MAIN.player, MAIN.UNDERWATER_Y);
+    }
+    else if (MAIN.updateHelper.checkAboveWater(MAIN.player) && !MAIN.updateHelper.checkStationary(MAIN.player)){
+      MAIN.player.body.velocity.y = MAIN.updateHelper.increaseGravity(MAIN.player, MAIN.ABOVEWATER_Y);
     }
 
     // respawn is set to false after initial call or after a new
