@@ -5,7 +5,7 @@ var MAIN = {
   LAND_IMG : 'platform',
   ENEMY_IMG: 'player',
   ENEMY_X: 0,
-  ENEMY_Y: 600-205, // 600 is screen height
+  ENEMY_Y: 600-215, // 600 is screen height
   ENEMY_VELOCITY: 150,
   BIRD_X: 0,
   BIRD_Y: 600-330,
@@ -42,7 +42,7 @@ MAIN.createHelper = {
   // TODO: Slow rate when player under water
   // Add actual sprites for player, enemy and bird
   createPlayer: function(){
-    var player = new Player(game.world.width/2, game.world.height-50,
+    var player = new Player(game.world.width/2, game.world.height-70,
                             MAIN.P_IMG);
     player = player.setupPlayer();
     console.log(player);
