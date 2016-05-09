@@ -15,6 +15,7 @@ var Player = function(x,y,img){
 
 Player.prototype.setupPlayer = function(){
   var player = this.createSprite();
+  this.startAnimation(player);
   this.enablePhysics(player);
   this.setAnchor(player);
   return player;
@@ -23,6 +24,11 @@ Player.prototype.setupPlayer = function(){
 Player.prototype.createSprite = function(){
   return game.add.sprite(this.x, this.y, this.img);
 };
+
+Player.prototype.startAnimation = function(player){
+  var walk = player.animations.add('move');
+  player.animations.play('move', 3, true);
+}
 
 Player.prototype.enablePhysics = function(player){
   game.physics.arcade.enable(player);

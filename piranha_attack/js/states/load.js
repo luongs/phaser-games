@@ -18,8 +18,13 @@ LOAD.preloadHelper = {
     game.stage.backgroundColor = LOAD.backgroundColor;
   },
 
+  loadAnimation: function() {
+    game.load.spritesheet('player', 'assets/fishSprite.png', 32,32);
+  },
+
   loadImages: function() {
-    game.load.image('player', 'assets/fish_fin.gif');
+    game.load.image('enemy', 'assets/land.png');
+    game.load.image('bird', 'assets/bird.png');
     game.load.image('platform', 'assets/platform.png');
   }
 };
@@ -28,6 +33,7 @@ var loadState = {
   preload: function(){
     LOAD.preloadHelper.displayLoadMsg();
     LOAD.preloadHelper.loadBackground();
+    LOAD.preloadHelper.loadAnimation();
     LOAD.preloadHelper.loadImages();
   },
 

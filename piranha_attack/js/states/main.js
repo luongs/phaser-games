@@ -3,7 +3,8 @@ var game = game;
 var MAIN = {
   P_IMG : 'player',
   LAND_IMG : 'platform',
-  ENEMY_IMG: 'player',
+  ENEMY_IMG: 'enemy',
+  BIRD_IMG: 'bird',
   ENEMY_X: 0,
   ENEMY_Y: 600-215, // 600 is screen height
   ENEMY_VELOCITY: 150,
@@ -59,7 +60,7 @@ MAIN.createHelper = {
 
   createBird: function(){
     var item = null;
-    var enemy = new Enemy(MAIN.BIRD_X, MAIN.BIRD_Y, MAIN.ENEMY_IMG);
+    var enemy = new Enemy(MAIN.BIRD_X, MAIN.BIRD_Y, MAIN.BIRD_IMG);
     item = enemy.setupEnemy();
     enemy.setXVelocity(item, MAIN.BIRD_VELOCITY);
     enemy.setGravity(item, MAIN.BIRD_GRAVITY);
