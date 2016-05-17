@@ -1,18 +1,30 @@
 var game = game;
 
+var DIMENSIONS = {
+  HEIGHT: 600,
+  WIDTH: 750
+};
+
 var MAIN = {
   P_IMG : 'player',
   LAND_IMG : 'platform',
   ENEMY_IMG: 'enemy',
   BIRD_IMG: 'bird',
   ENEMY_X: 0,
-  ENEMY_Y: 600-215, // 600 is screen height
+  ENEMY_Y: DIMENSIONS.HEIGHT-215, // 600 is screen height
   ENEMY_VELOCITY: 150,
   BIRD_X: 0,
-  BIRD_Y: 600-330,
+  BIRD_Y: DIMENSIONS.HEIGHT-330,
   BIRD_GRAVITY: 0,
   BIRD_VELOCITY: 100,
-  BIRD_SPAWN_CTR: 500
+  BIRD_SPAWN_CTR: 500,
+  TEXT_STYLE:  {font: '50px Arial', fill: '#ffffff'},
+  STARTLAND_X: -90,
+  STARTLAND_Y: DIMENSIONS.HEIGHT-180,
+  STOPLAND_X: 300,
+  STOPLAND_Y: DIMENSIONS.HEIGHT-25,
+  ENDLAND_X: DIMENSIONS.WIDTH-300,
+  ENDLAND_Y: DIMENSIONS.HEIGHT-180
 };
 
 MAIN.createHelper = {
@@ -24,17 +36,18 @@ MAIN.createHelper = {
   //TODO: Decrease screen dimensions
   createLand: function(platforms){
     var item = null;
-    var startLand = new Structure(-90, game.world.height-180, MAIN.LAND_IMG,
-                                  platforms);
+    var startLand = new Structure(MAIN.STARTLAND_X, MAIN.STARTLAND_Y,
+                                  MAIN.LAND_IMG, platforms);
+
     item = startLand.createStructure();
     startLand.changeScale(item, 1 , 6);
 
-    var stopPoint = new Structure(300, game.world.height-25, MAIN.LAND_IMG,
-                                  platforms);
+    var stopPoint = new Structure(MAIN.STOPLAND_X, MAIN.STOPLAND_Y,
+                                  MAIN.LAND_IMG, platforms);
     item = stopPoint.createStructure();
     stopPoint.changeScale(item,1,1);
 
-    var endLand = new Structure(game.world.width-300, game.world.height-180,
+    var endLand = new Structure(MAIN.ENDLAND_X, MAIN.ENDLAND_Y,
                             MAIN.LAND_IMG, platforms);
     item = endLand.createStructure();
     endLand.changeScale(item, 1, 6);
@@ -84,7 +97,7 @@ MAIN.createHelper = {
   },
 
   createPointsText: function(points){
-    var style = {font: '50px Arial', fill: '#ffffff'};
+    var style = MAIN.TEXT_STYLE;
     var pointsText = game.add.text(game.world.width/2, 18, points, style);
     pointsText.text = points;
     return pointsText;
