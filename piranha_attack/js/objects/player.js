@@ -25,9 +25,14 @@ Player.prototype.createSprite = function(){
   return game.add.sprite(this.x, this.y, this.img);
 };
 
+PLAYER.ANIM_NAME = 'move';
+PLAYER.ANIM_FRAMERATE = 3;
+PLAYER.ANIM_LOOP = true;
+
 Player.prototype.startAnimation = function(player){
-  var walk = player.animations.add('move');
-  player.animations.play('move', 3, true);
+  var walk = player.animations.add(PLAYER.ANIM_NAME);
+  player.animations.play(PLAYER.ANIM_NAME, PLAYER.ANIM_FRAMERATE,
+                         PLAYER.ANIM_LOOP);
 }
 
 Player.prototype.enablePhysics = function(player){
