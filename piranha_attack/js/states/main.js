@@ -189,6 +189,7 @@ MAIN.updateHelper = {
     pointsText.text = points;
   },
 
+  //TODO: Flip fish at the top
   jump: function(player, spaceKey){
     // Jump when sprite is stationary or at the apex of a jump
     if (spaceKey.isDown &&
