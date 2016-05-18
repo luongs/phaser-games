@@ -20,10 +20,11 @@ LOAD.preloadHelper = {
 
   loadAnimation: function() {
     game.load.spritesheet('player', 'assets/fishSprite.png', 32,32);
+    game.load.spritesheet('enemy', 'assets/duckSprite.png', 30, 35)
   },
 
   loadImages: function() {
-    game.load.image('enemy', 'assets/land.png');
+    //game.load.image('enemy', 'assets/land.png');
     game.load.image('bird', 'assets/bird.png');
     game.load.image('platform', 'assets/platform.png');
   }
