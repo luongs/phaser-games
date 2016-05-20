@@ -10,6 +10,6 @@ game.state.add('boot', bootState);
 game.state.add('load', loadState);
 game.state.add('menu', menuState);
 game.state.add('main', mainState);
-game.state.add('win', winState);
+game.state.add('gameover', gameoverState);
 
 game.state.start('boot');
