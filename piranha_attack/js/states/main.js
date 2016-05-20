@@ -101,6 +101,26 @@ MAIN.createHelper = {
     var pointsText = game.add.text(game.world.width/2, 18, points, style);
     pointsText.text = points;
     return pointsText;
+  },
+
+  savePoints: function(points){
+    if (game.device.localStorage){
+      localStorage.score = points;
+
+      if (localStorage.highScore){
+
+        if (parseInt(points) > parseInt(localStorage.highScore)){
+          localStorage.highScore = points;
+        }
+      }
+      else {
+        localStorage.highScore = localStorage.score;
+      }
+    }
+  },
+
+  endGame: function(){
+    game.state.start('gameover');
   }
 };
 
@@ -271,8 +291,8 @@ var mainState = {
     if (MAIN.respawn === false &&
         MAIN.updateHelper.enemyIsOutOfBounds(MAIN.enemy)){
       console.log("Game Over");
-      // Return to main menu for now
-      game.state.start('menu');
+      MAIN.createHelper.savePoints(MAIN.points);
+      MAIN.createHelper.endGame();
     }
 
     MAIN.updateHelper.jump(MAIN.player, MAIN.spaceKey);
