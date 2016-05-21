@@ -1,8 +1,9 @@
 var GAMEOVER = {
-  scoreMsg: "Your score: ",
-  highScoreMsg: "Highest score: ",
-  mainMenuMsg: "Click to return to main menu",
-  textFont: {font: '25px Arial', fill: "#ffffff"}
+  SCORE_MSG: "Your score: ",
+  HIGHSCORE_MSG: "Highest score: ",
+  MAINMENU_MSG: "Click to return to main menu",
+  BG_COLOR: '',
+  TEXT_FONT: {font: '25px Arial', fill: "#ffffff"}
 };
 
 var game = game;
@@ -30,10 +31,11 @@ GAMEOVER.helper = {
   },
 
   displayMsg: function(score, highScore){
-    game.add.text(80,80, GAMEOVER.scoreMsg.concat(score),
-                  GAMEOVER.textFont);
-    game.add.text(80, 110, GAMEOVER.highScoreMsg.concat(highScore),
-                  GAMEOVER.textFont);
+    game.add.text(80,80, GAMEOVER.SCORE_MSG.concat(score),
+                  GAMEOVER.TEXT_FONT);
+    game.add.text(80, 110, GAMEOVER.HIGHSCORE_MSG.concat(highScore),
+                  GAMEOVER.TEXT_FONT);
+    game.add.text(80, 150, GAMEOVER.MAINMENU_MSG, GAMEOVER.TEXT_FONT);
   },
 
   getPlayerInput: function(){
@@ -50,6 +52,7 @@ var gameoverState = {
   create: function() {
     var score = GAMEOVER.helper.retrieveScore();
     var highScore = GAMEOVER.helper.retrieveScore();
+    LOAD.preloadHelper.loadBackground(GAMEOVER.BG_COLOR);
     GAMEOVER.helper.displayMsg(score, highScore);
     GAMEOVER.helper.getPlayerInput();
   }

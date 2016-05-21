@@ -3,7 +3,7 @@ var LOAD = {
   textFont : {font: '30px Courier', fill: '#ffffff'},
   loadLabelX: 80,
   loadLabelY: 150,
-  backgroundColor: '#ccddff'
+  backgroundColor: '#2ecc71'
 };
 
 var game = game;
@@ -14,8 +14,8 @@ LOAD.preloadHelper = {
                   LOAD.textFont);
   },
 
-  loadBackground: function() {
-    game.stage.backgroundColor = LOAD.backgroundColor;
+  loadBackground: function(bgColor) {
+    game.stage.backgroundColor = bgColor;
   },
 
   loadAnimation: function() {
@@ -32,7 +32,7 @@ LOAD.preloadHelper = {
 var loadState = {
   preload: function(){
     LOAD.preloadHelper.displayLoadMsg();
-    LOAD.preloadHelper.loadBackground();
+    LOAD.preloadHelper.loadBackground(LOAD.backgroundColor);
     LOAD.preloadHelper.loadAnimation();
     LOAD.preloadHelper.loadImages();
   },

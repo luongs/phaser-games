@@ -10,6 +10,7 @@ var MAIN = {
   LAND_IMG : 'platform',
   ENEMY_IMG: 'enemy',
   BIRD_IMG: 'bird',
+  BG_COLOR: '#ccddff',
   ENEMY_X: 0,
   ENEMY_Y: DIMENSIONS.HEIGHT-215, // 600 is screen height
   ENEMY_VELOCITY: 150,
@@ -244,6 +245,7 @@ MAIN.ABOVEWATER_Y = 3;
 var mainState = {
   create:function() {
     MAIN.spaceKey = MAIN.createHelper.addKeyboard();
+    LOAD.preloadHelper.loadBackground(MAIN.BG_COLOR);
     MAIN.platforms = LEVEL.createGroup();
     MAIN.createHelper.createLand(MAIN.platforms);
     MAIN.player = MAIN.createHelper.createPlayer();
