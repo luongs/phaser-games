@@ -38,13 +38,14 @@ GAMEOVER.helper = {
     game.add.text(80, 150, GAMEOVER.MAINMENU_MSG, GAMEOVER.TEXT_FONT);
   },
 
-  getPlayerInput: function(){
-    var click = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    click.onDown.addOnce(this.goToMainMenu, this);
+  getClick: function(){
+    return game.input.activePointer.isDown;
   },
 
-  goToMainMenu: function() {
-    game.state.start('menu');
+  goToMainMenu: function(clicked) {
+    if (clicked){
+      game.state.start('menu');
+    }
   }
 };
 
@@ -54,6 +55,10 @@ var gameoverState = {
     var highScore = GAMEOVER.helper.retrieveScore();
     LOAD.preloadHelper.loadBackground(GAMEOVER.BG_COLOR);
     GAMEOVER.helper.displayMsg(score, highScore);
-    GAMEOVER.helper.getPlayerInput();
+  },
+
+  update: function() {
+    var clicked = GAMEOVER.helper.getClick();
+    GAMEOVER.helper.goToMainMenu(clicked);
   }
 };

@@ -34,6 +34,10 @@ MAIN.createHelper = {
     return spaceKey;
   },
 
+  addMouse: function(){
+    return game.input.activePointer;
+  },
+
   //TODO: Decrease screen dimensions
   createLand: function(platforms){
     var item = null;
@@ -211,9 +215,9 @@ MAIN.updateHelper = {
   },
 
   //TODO: Flip fish at the top
-  jump: function(player, spaceKey){
+  jump: function(player, spaceKey, mouse){
     // Jump when sprite is stationary or at the apex of a jump
-    if (spaceKey.isDown &&
+    if ((spaceKey.isDown || mouse.isDown) &&
         (player.body.velocity.y <= 0 && player.body.velocity.y > -30)){
       if (player.alive === false){
         return;
@@ -245,6 +249,7 @@ MAIN.ABOVEWATER_Y = 3;
 var mainState = {
   create:function() {
     MAIN.spaceKey = MAIN.createHelper.addKeyboard();
+    MAIN.mouse = MAIN.createHelper.addMouse();
     LOAD.preloadHelper.loadBackground(MAIN.BG_COLOR);
     MAIN.platforms = LEVEL.createGroup();
     MAIN.createHelper.createLand(MAIN.platforms);
@@ -297,6 +302,6 @@ var mainState = {
       MAIN.createHelper.endGame();
     }
 
-    MAIN.updateHelper.jump(MAIN.player, MAIN.spaceKey);
+    MAIN.updateHelper.jump(MAIN.player, MAIN.spaceKey, MAIN.mouse);
   }
 };
