@@ -18,19 +18,24 @@ MENU.menuHelper = {
     game.add.text(80, game.world.height-170, MENU.instr, MENU.textFont);
   },
 
-  getPlayerInput: function(){
-    var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    spaceKey.onDown.addOnce(this.startGame, this);
+  getClick: function() {
+    return game.input.activePointer.isDown;
   },
 
-  startGame: function(){
-    game.state.start('main');
+  startGame: function(clicked){
+    if (clicked){
+      game.state.start('main');
+    }
   }
 };
 
 var menuState = {
   create: function() {
     MENU.menuHelper.displayText();
-    MENU.menuHelper.getPlayerInput();
+  },
+
+  update: function(){
+    var clicked = MENU.menuHelper.getClick();
+    MENU.menuHelper.startGame(clicked);
   }
 };

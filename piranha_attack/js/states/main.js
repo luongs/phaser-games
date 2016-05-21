@@ -29,10 +29,6 @@ var MAIN = {
 };
 
 MAIN.createHelper = {
-  addKeyboard: function(){
-    var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    return spaceKey;
-  },
 
   addMouse: function(){
     return game.input.activePointer;
@@ -215,9 +211,9 @@ MAIN.updateHelper = {
   },
 
   //TODO: Flip fish at the top
-  jump: function(player, spaceKey, mouse){
+  jump: function(player, mouse){
     // Jump when sprite is stationary or at the apex of a jump
-    if ((spaceKey.isDown || mouse.isDown) &&
+    if ( mouse.isDown &&
         (player.body.velocity.y <= 0 && player.body.velocity.y > -30)){
       if (player.alive === false){
         return;
@@ -248,7 +244,6 @@ MAIN.ABOVEWATER_Y = 3;
 
 var mainState = {
   create:function() {
-    MAIN.spaceKey = MAIN.createHelper.addKeyboard();
     MAIN.mouse = MAIN.createHelper.addMouse();
     LOAD.preloadHelper.loadBackground(MAIN.BG_COLOR);
     MAIN.platforms = LEVEL.createGroup();
@@ -302,6 +297,6 @@ var mainState = {
       MAIN.createHelper.endGame();
     }
 
-    MAIN.updateHelper.jump(MAIN.player, MAIN.spaceKey, MAIN.mouse);
+    MAIN.updateHelper.jump(MAIN.player, MAIN.mouse);
   }
 };
