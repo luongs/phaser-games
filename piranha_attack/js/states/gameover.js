@@ -10,7 +10,7 @@ var game = game;
 
 GAMEOVER.helper = {
 
-  retrieveScore: function(){
+  getScore: function(){
     var score = 0;
 
     if (game.device.localStorage){
@@ -51,8 +51,8 @@ GAMEOVER.helper = {
 
 var gameoverState = {
   create: function() {
-    var score = GAMEOVER.helper.retrieveScore();
-    var highScore = GAMEOVER.helper.retrieveScore();
+    var score = GAMEOVER.helper.getScore();
+    var highScore = GAMEOVER.helper.getHighScore();
     LOAD.preloadHelper.loadBackground(GAMEOVER.BG_COLOR);
     GAMEOVER.helper.displayMsg(score, highScore);
   },
