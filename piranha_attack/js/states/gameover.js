@@ -3,7 +3,11 @@ var GAMEOVER = {
   HIGHSCORE_MSG: "Highest score: ",
   MAINMENU_MSG: "Tap to return to main menu",
   BG_COLOR: '#2ecc71',
-  TEXT_FONT: {font: '25px Arial', fill: "#ffffff"}
+  TEXT_FONT: {font: '25px Arial', fill: "#ffffff"},
+  X: 80,
+  SCORE_Y: 80,
+  HIGHSCORE_Y: 120,
+  INSTR_Y: 170
 };
 
 var game = game;
@@ -31,11 +35,14 @@ GAMEOVER.helper = {
   },
 
   displayMsg: function(score, highScore){
-    game.add.text(80,80, GAMEOVER.SCORE_MSG.concat(score),
+    game.add.text(GAMEOVER.X, GAMEOVER.SCORE_Y,
+                  GAMEOVER.SCORE_MSG.concat(score),
                   GAMEOVER.TEXT_FONT);
-    game.add.text(80, 110, GAMEOVER.HIGHSCORE_MSG.concat(highScore),
+    game.add.text(GAMEOVER.X, GAMEOVER.HIGHSCORE_Y,
+                  GAMEOVER.HIGHSCORE_MSG.concat(highScore),
                   GAMEOVER.TEXT_FONT);
-    game.add.text(80, 150, GAMEOVER.MAINMENU_MSG, GAMEOVER.TEXT_FONT);
+    game.add.text(GAMEOVER.X, GAMEOVER.INSTR_Y,
+                  GAMEOVER.MAINMENU_MSG, GAMEOVER.TEXT_FONT);
   },
 
   getClick: function(){
