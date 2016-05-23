@@ -54,7 +54,6 @@ MAIN.createHelper = {
   },
 
   // TODO: Slow rate when player under water
-  // Add actual sprites for player, enemy and bird
   createPlayer: function(){
     var player = new Player(game.world.width/2, game.world.height-200,
                             MAIN.P_IMG);
@@ -105,11 +104,14 @@ MAIN.createHelper = {
   savePoints: function(points){
     if (game.device.localStorage){
       localStorage.score = points;
+      localStorage.newHighScore = false;
+
 
       if (localStorage.highScore){
 
         if (parseInt(points) > parseInt(localStorage.highScore)){
           localStorage.highScore = points;
+          localStorage.newHighScore = true;
         }
       }
       else {

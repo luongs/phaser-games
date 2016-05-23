@@ -1,5 +1,6 @@
 var GAMEOVER = {
   SCORE_MSG: "Your score: ",
+  NEW_HIGHSCORE: " - New High Score!",
   HIGHSCORE_MSG: "Highest score: ",
   MAINMENU_MSG: "Tap to return to main menu",
   BG_COLOR: '#2ecc71',
@@ -34,7 +35,21 @@ GAMEOVER.helper = {
     return highScore;
   },
 
-  displayMsg: function(score, highScore){
+  getNewHighScore: function() {
+    var isNewHighScore = false;
+    if (game.device.localStorage){
+      isNewHighScore = localStorage.newHighScore;
+    }
+
+    return isNewHighScore;
+  },
+
+  displayMsg: function(score, highScore, isNewHighScore){
+    if (isNewHighScore === 'true'){
+      game.add.text(GAMEOVER.X, GAMEOVER.SCORE_Y,
+          (GAMEOVER.SCORE_MSG.concat(score)).concat(GAMEOVER.NEW_HIGHSCORE),
+          GAMEOVER.TEXT_FONT);
+    }
     game.add.text(GAMEOVER.X, GAMEOVER.SCORE_Y,
                   GAMEOVER.SCORE_MSG.concat(score),
                   GAMEOVER.TEXT_FONT);
@@ -60,8 +75,9 @@ var gameoverState = {
   create: function() {
     var score = GAMEOVER.helper.getScore();
     var highScore = GAMEOVER.helper.getHighScore();
+    var isNewHighScore = GAMEOVER.helper.getNewHighScore();
     LOAD.preloadHelper.loadBackground(GAMEOVER.BG_COLOR);
-    GAMEOVER.helper.displayMsg(score, highScore);
+    GAMEOVER.helper.displayMsg(score, highScore, isNewHighScore);
   },
 
   update: function() {
