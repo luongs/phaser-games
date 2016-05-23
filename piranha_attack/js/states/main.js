@@ -60,7 +60,6 @@ MAIN.createHelper = {
     var player = new Player(game.world.width/2, game.world.height-70,
                             MAIN.P_IMG);
     player = player.setupPlayer();
-    console.log(player);
     return player;
   },
 
@@ -223,7 +222,6 @@ MAIN.updateHelper = {
   },
 
   flipAtTop: function(player){
-    console.log(player.body.velocity.y);
     if (player.body.velocity.y <=0){
       player.scale.y = 1;
     }
