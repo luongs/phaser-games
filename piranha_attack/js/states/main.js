@@ -34,7 +34,6 @@ MAIN.createHelper = {
     return game.input.activePointer;
   },
 
-  //TODO: Decrease screen dimensions
   createLand: function(platforms){
     var item = null;
     var startLand = new Structure(MAIN.STARTLAND_X, MAIN.STARTLAND_Y,
