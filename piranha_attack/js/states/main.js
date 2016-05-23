@@ -13,7 +13,7 @@ var MAIN = {
   BG_COLOR: '#ccddff',
   ENEMY_X: 0,
   ENEMY_Y: DIMENSIONS.HEIGHT-285,
-  ENEMY_VELOCITY: 150,
+  ENEMY_VELOCITY: 180,
   BIRD_X: 0,
   BIRD_Y: DIMENSIONS.HEIGHT-450,
   BIRD_GRAVITY: 0,
@@ -23,7 +23,7 @@ var MAIN = {
   STARTLAND_X: -90,
   STARTLAND_Y: DIMENSIONS.HEIGHT-250,
   STOPLAND_X: 300,
-  STOPLAND_Y: DIMENSIONS.HEIGHT-25,
+  STOPLAND_Y: DIMENSIONS.HEIGHT-50,
   ENDLAND_X: DIMENSIONS.WIDTH-300,
   ENDLAND_Y: DIMENSIONS.HEIGHT-250
 };
@@ -45,7 +45,7 @@ MAIN.createHelper = {
     var stopPoint = new Structure(MAIN.STOPLAND_X, MAIN.STOPLAND_Y,
                                   MAIN.LAND_IMG, platforms);
     item = stopPoint.createStructure();
-    stopPoint.changeScale(item,1,1);
+    stopPoint.changeScale(item,1,2);
 
     var endLand = new Structure(MAIN.ENDLAND_X, MAIN.ENDLAND_Y,
                             MAIN.LAND_IMG, platforms);
@@ -125,8 +125,8 @@ MAIN.createHelper = {
 
 MAIN.ENEMY_MIN_T = 500;
 MAIN.ENEMY_MAX_T= 2000;
-MAIN.ENEMY_Y_GRAVITY = -270;
-MAIN.Y_GRAVITY= -470;
+MAIN.ENEMY_Y_GRAVITY = -250;
+MAIN.Y_GRAVITY= -450;
 MAIN.ADDED_GRAVITY = 5;
 
 MAIN.updateHelper = {
