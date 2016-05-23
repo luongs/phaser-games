@@ -210,7 +210,6 @@ MAIN.updateHelper = {
     pointsText.text = points;
   },
 
-  //TODO: Flip fish at the top
   jump: function(player, mouse){
     // Jump when sprite is stationary or at the apex of a jump
     if ( mouse.isDown &&
@@ -219,6 +218,17 @@ MAIN.updateHelper = {
         return;
       }
       player.body.velocity.y = MAIN.Y_GRAVITY;
+
+    }
+  },
+
+  flipAtTop: function(player){
+    console.log(player.body.velocity.y);
+    if (player.body.velocity.y <=0){
+      player.scale.y = 1;
+    }
+    else {
+      player.scale.y = -1;
     }
   },
 
@@ -297,6 +307,7 @@ var mainState = {
       MAIN.createHelper.endGame();
     }
 
+    MAIN.updateHelper.flipAtTop(MAIN.player);
     MAIN.updateHelper.jump(MAIN.player, MAIN.mouse);
   }
 };
