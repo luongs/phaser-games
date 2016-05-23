@@ -1,7 +1,7 @@
 var GAMEOVER = {
   SCORE_MSG: "Your score: ",
   HIGHSCORE_MSG: "Highest score: ",
-  MAINMENU_MSG: "Click to return to main menu",
+  MAINMENU_MSG: "Tap to return to main menu",
   BG_COLOR: '#2ecc71',
   TEXT_FONT: {font: '25px Arial', fill: "#ffffff"}
 };

@@ -1,9 +1,9 @@
 
 var MENU = {
   title: 'Piranha Attack',
-  startLabel: 'Click to start game',
+  startLabel: 'Tap to start game',
   instrLabel: 'Instructions',
-  instr: 'Click on screen to jump',
+  instr: 'Tap to jump \nHold for double jump ',
   headerFont: {font: '50px Arial', fill: '#ffffff'},
   textFont: {font: '25px Arial', fill: '#ffffff'}
 };
