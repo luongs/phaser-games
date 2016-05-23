@@ -12,20 +12,20 @@ var MAIN = {
   BIRD_IMG: 'bird',
   BG_COLOR: '#ccddff',
   ENEMY_X: 0,
-  ENEMY_Y: DIMENSIONS.HEIGHT-215, // 600 is screen height
+  ENEMY_Y: DIMENSIONS.HEIGHT-285,
   ENEMY_VELOCITY: 150,
   BIRD_X: 0,
-  BIRD_Y: DIMENSIONS.HEIGHT-330,
+  BIRD_Y: DIMENSIONS.HEIGHT-450,
   BIRD_GRAVITY: 0,
   BIRD_VELOCITY: 100,
   BIRD_SPAWN_CTR: 500,
   TEXT_STYLE:  {font: '50px Arial', fill: '#ffffff'},
   STARTLAND_X: -90,
-  STARTLAND_Y: DIMENSIONS.HEIGHT-180,
+  STARTLAND_Y: DIMENSIONS.HEIGHT-250,
   STOPLAND_X: 300,
   STOPLAND_Y: DIMENSIONS.HEIGHT-25,
   ENDLAND_X: DIMENSIONS.WIDTH-300,
-  ENDLAND_Y: DIMENSIONS.HEIGHT-180
+  ENDLAND_Y: DIMENSIONS.HEIGHT-250
 };
 
 MAIN.createHelper = {
@@ -41,7 +41,7 @@ MAIN.createHelper = {
                                   MAIN.LAND_IMG, platforms);
 
     item = startLand.createStructure();
-    startLand.changeScale(item, 1 , 6);
+    startLand.changeScale(item, 1 , 8);
 
     var stopPoint = new Structure(MAIN.STOPLAND_X, MAIN.STOPLAND_Y,
                                   MAIN.LAND_IMG, platforms);
@@ -51,13 +51,13 @@ MAIN.createHelper = {
     var endLand = new Structure(MAIN.ENDLAND_X, MAIN.ENDLAND_Y,
                             MAIN.LAND_IMG, platforms);
     item = endLand.createStructure();
-    endLand.changeScale(item, 1, 6);
+    endLand.changeScale(item, 1, 8);
   },
 
   // TODO: Slow rate when player under water
   // Add actual sprites for player, enemy and bird
   createPlayer: function(){
-    var player = new Player(game.world.width/2, game.world.height-70,
+    var player = new Player(game.world.width/2, game.world.height-200,
                             MAIN.P_IMG);
     player = player.setupPlayer();
     return player;
@@ -300,7 +300,6 @@ var mainState = {
     // enemy is spawned
     if (MAIN.respawn === false &&
         MAIN.updateHelper.enemyIsOutOfBounds(MAIN.enemy)){
-      console.log("Game Over");
       MAIN.createHelper.savePoints(MAIN.points);
       MAIN.createHelper.endGame();
     }

@@ -19,9 +19,9 @@ LOAD.preloadHelper = {
   },
 
   loadAnimation: function() {
-    game.load.spritesheet('player', 'assets/fishSprite.png', 32,32);
-    game.load.spritesheet('enemy', 'assets/duckSprite.png', 30, 35)
-    game.load.spritesheet('bird', 'assets/flappySprite.png', 45, 35)
+    game.load.spritesheet('player', 'assets/fishSprite2.png', 64,64);
+    game.load.spritesheet('enemy', 'assets/duckSprite2.png', 50, 58)
+    game.load.spritesheet('bird', 'assets/flappySprite2.png', 70, 55)
   },
 
   loadImages: function() {
