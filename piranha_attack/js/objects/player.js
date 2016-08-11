@@ -1,5 +1,4 @@
-// object for player creation
-var PLAYER = {
+const PLAYER = {
   ANCHOR: 0.5,
   Y_GRAVITY: 400
 };

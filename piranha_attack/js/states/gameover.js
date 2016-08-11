@@ -1,4 +1,4 @@
-var GAMEOVER = {
+const GAMEOVER = {
   SCORE_MSG: "Your score: ",
   NEW_HIGHSCORE: " - New High Score!",
   HIGHSCORE_MSG: "Highest score: ",

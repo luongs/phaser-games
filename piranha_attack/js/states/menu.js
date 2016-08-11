@@ -1,5 +1,5 @@
 
-var MENU = {
+const MENU = {
   title: 'Piranha Attack',
   startLabel: 'Tap to start game',
   instrLabel: 'Instructions',

@@ -1,4 +1,4 @@
-var LOAD = {
+const LOAD = {
   loadMsg : "Loading...",
   textFont : {font: '30px Courier', fill: '#ffffff'},
   loadLabelX: 80,
@@ -29,7 +29,7 @@ LOAD.preloadHelper = {
   }
 };
 
-var loadState = {
+const loadState = {
   preload: function(){
     LOAD.preloadHelper.displayLoadMsg();
     LOAD.preloadHelper.loadBackground(LOAD.backgroundColor);

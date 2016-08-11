@@ -1,11 +1,11 @@
 var game = game;
 
-var DIMENSIONS = {
+const DIMENSIONS = {
   HEIGHT: 600,
   WIDTH: 750
 };
 
-var MAIN = {
+const MAIN = {
   P_IMG : 'player',
   LAND_IMG : 'platform',
   ENEMY_IMG: 'enemy',
@@ -36,24 +36,23 @@ MAIN.createHelper = {
 
   createLand: function(platforms){
     var item = null;
-    var startLand = new Structure(MAIN.STARTLAND_X, MAIN.STARTLAND_Y,
+    const startLand = new Structure(MAIN.STARTLAND_X, MAIN.STARTLAND_Y,
                                   MAIN.LAND_IMG, platforms);
 
     item = startLand.createStructure();
     startLand.changeScale(item, 1 , 8);
 
-    var stopPoint = new Structure(MAIN.STOPLAND_X, MAIN.STOPLAND_Y,
+    const stopPoint = new Structure(MAIN.STOPLAND_X, MAIN.STOPLAND_Y,
                                   MAIN.LAND_IMG, platforms);
     item = stopPoint.createStructure();
     stopPoint.changeScale(item,1,2);
 
-    var endLand = new Structure(MAIN.ENDLAND_X, MAIN.ENDLAND_Y,
+    const endLand = new Structure(MAIN.ENDLAND_X, MAIN.ENDLAND_Y,
                             MAIN.LAND_IMG, platforms);
     item = endLand.createStructure();
     endLand.changeScale(item, 1, 8);
   },
 
-  // TODO: Slow rate when player under water
   createPlayer: function(){
     var player = new Player(game.world.width/2, game.world.height-200,
                             MAIN.P_IMG);
@@ -63,7 +62,7 @@ MAIN.createHelper = {
 
   createEnemy: function(){
     var item = null;
-    var enemy = new Enemy(MAIN.ENEMY_X, MAIN.ENEMY_Y, MAIN.ENEMY_IMG);
+    const enemy = new Enemy(MAIN.ENEMY_X, MAIN.ENEMY_Y, MAIN.ENEMY_IMG);
     item = enemy.setupEnemy();
     enemy.setXVelocity(item, MAIN.ENEMY_VELOCITY);
     return item;
@@ -71,7 +70,7 @@ MAIN.createHelper = {
 
   createBird: function(){
     var item = null;
-    var enemy = new Enemy(MAIN.BIRD_X, MAIN.BIRD_Y, MAIN.BIRD_IMG);
+    const enemy = new Enemy(MAIN.BIRD_X, MAIN.BIRD_Y, MAIN.BIRD_IMG);
     item = enemy.setupEnemy();
     enemy.setXVelocity(item, MAIN.BIRD_VELOCITY);
     enemy.setGravity(item, MAIN.BIRD_GRAVITY);
@@ -95,8 +94,8 @@ MAIN.createHelper = {
   },
 
   createPointsText: function(points){
-    var style = MAIN.TEXT_STYLE;
-    var pointsText = game.add.text(game.world.width/2, 18, points, style);
+    const style = MAIN.TEXT_STYLE;
+    const pointsText = game.add.text(game.world.width/2, 18, points, style);
     pointsText.text = points;
     return pointsText;
   },
@@ -163,14 +162,14 @@ MAIN.updateHelper = {
 
   spawnEnemy: function(){
     // Spawn enemy at random time between .5 and 2 seconds
-    var randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
+    const randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
                   MAIN.ENEMY_MIN_T;
     window.setTimeout(MAIN.createHelper.createTimerEnemy, randTime);
   },
 
   incrementCtrAndSpawnBird: function(counter){
     if (counter === MAIN.BIRD_SPAWN_CTR){
-      var randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
+      const randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
                      MAIN.ENEMY_MIN_T;
       window.setTimeout(MAIN.createHelper.createTimerBird, randTime);
       counter = 0;
@@ -190,7 +189,7 @@ MAIN.updateHelper = {
       enemy.body.velocity.x = MAIN.ENEMY_VELOCITY;
     }
     // Makes enemy jump between 1 and 3 jumps
-    var maxChk = MAIN.updateHelper.getRandomNum(350, 485);
+    const maxChk = MAIN.updateHelper.getRandomNum(350, 485);
     if (enemy.x > 300 && enemy.x < maxChk && enemy.alive &&
         (enemy.body.velocity.y <= 0 && enemy.body.velocity.y > -0.1)){
       enemy.body.velocity.y = MAIN.ENEMY_Y_GRAVITY;
@@ -200,7 +199,7 @@ MAIN.updateHelper = {
   enemyStopAndJump: function(enemy){
     if (enemy.x > 295 && enemy.x < 300){
       enemy.body.velocity.x = 0;
-      var randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
+      const randTime = Math.random() *(MAIN.ENEMY_MAX_T-MAIN.ENEMY_MIN_T)+
                     MAIN.ENEMY_MIN_T;
       window.setTimeout(this.enemyJump, randTime, enemy);
     }

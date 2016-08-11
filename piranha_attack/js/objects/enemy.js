@@ -1,5 +1,5 @@
 // object for player creation
-var ENEMY = {
+const ENEMY = {
   ANCHOR: 0.5,
   Y_GRAVITY: 500
 };
